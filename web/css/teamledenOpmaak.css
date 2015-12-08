@@ -1,0 +1,147 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #666;
+}
+
+.container-team{
+    width: 960px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.container-team .column{
+    float: left;
+    display: inline;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.container-team .one-third.column {
+	width: 300px;
+    overflow: hidden;
+
+}
+
+
+/* Section (team)
+--------------------------------------------------*/
+
+#team {
+	text-align: center;
+	padding: 50px 0;
+    border-top: solid 1px rgb(198,198,198);
+    overflow: hidden;
+
+  }
+
+
+#team .member {
+	color: #666;
+	margin-bottom: 20px;
+	font-size: 14px;
+	line-height: 24px;
+	padding: 20px 20px 30px 20px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: medium double #ddd;
+	-webkit-border-radius: 2px; 
+	-moz-border-radius: 2px; 
+	border-radius: 2px;
+}
+
+#team .member:hover {
+	background-color: rgba(255, 255, 255, .9);
+	-moz-box-shadow: 1px 1px 4px 1px #ccc;
+	-webkit-box-shadow: 1px 1px 4px 1px #ccc;
+	box-shadow: 1px 1px 4px 1px #ccc;
+}
+
+#team .member h2{
+	border-bottom: medium double #ddd;
+	padding-bottom: 20px;
+}
+
+#team .thumbnail {
+	margin-bottom: 20px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#team img {
+	max-width: 100%;
+	height: auto;
+}
+
+#members {
+	margin-top: 40px;
+    overflow: hidden;
+
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    
+    .container-team {
+        width: 768px 
+    }
+    
+    .container-team .column {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .container-team .three.columns {
+        width: 124px;
+    }
+    
+    
+    .container-team .one-third.column {
+        width: 236px; 
+    }
+   
+}
+
+/* Mobile (Portrait)
+--------------------------------------------------*/
+
+@media only screen and (max-width: 767px) {
+    
+    .container-team {
+        width: 260px; 
+    }
+    
+    .container-team .column {
+        margin: 0; 
+    }
+
+    .container-team .three.columns,
+    .container-team .one-third.column {
+        width: 260px; 
+    }
+
+}
+
+
+/* Mobile (Landscape)
+--------------------------------------------------*/
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    
+    .container-team {
+        width: 300px; 
+    }
+    
+    .container-team .column {
+        margin: 0; 
+    }
+
+    .container-team .three.columns,
+    .container-team .one-third.column{
+        width: 300px; 
+    }
+
+}
