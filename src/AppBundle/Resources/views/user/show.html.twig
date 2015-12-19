@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1>User</h1>
+    </div>
+{% if app.session.flashbag.has('danger') %}
+    <div class="alert alert-danger">
+        {% for message in app.session.flashbag.get('danger') %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+{% if app.session.flashbag.has('succes') %}
+    <div class="alert alert-success">
+        {% for message in app.session.flashbag.get('succes') %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+    <table class="record_properties table table-striped">
+        <tbody>
+            <tr>
+                <th>Username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+
+    <a href="{{ path('admin') }}">Back to the list</a>
+
+    <hr />
+    <a href="{{ path('admin_edit',{'id':user.id}) }}" class="btn btn-lg btn-primary">Edit</a>
+    <hr />
+    {{ form_start(delete_form) }}
+        <input type="submit" value="Delete" class="btn btn-lg btn-primary">
+    {{ form_end(delete_form) }}
+{% endblock %}

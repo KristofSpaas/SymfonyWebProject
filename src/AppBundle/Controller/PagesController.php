@@ -5,14 +5,14 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class TeamledenControllerController extends Controller
+class PagesController extends Controller
 {
     /**
-     * @Route("/showTeamleden")
+     * @Route("/team")
      */
-    public function showTeamledenAction()
+    public function contactAction()
     {
-        return $this->render('AppBundle:TeamledenController:showTeamleden.html.twig', array(
+        return $this->render('AppBundle:Pages:team.html.twig', array(
             // ...
         ));
     }

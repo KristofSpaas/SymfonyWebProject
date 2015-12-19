@@ -1,24 +1,37 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/book/security.html
-security:
 
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+security:
+    encoders:
+        AppBundle\Entity\User: bcrypt
+
+    role_hierarchy:
+        ROLE_PATIENT: []
+        ROLE_DOCTOR: [ROLE_PATIENT]
+        ROLE_ADMIN: [ROLE_DOCTOR, ROLE_MAKE_ADMINS]
+
     providers:
-        in_memory:
-            memory: ~
+        database_users:
+            entity: { class: AppBundle:User, property:email }
+
+    access_denied_url: /
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        secured_area:
+            pattern: ^/
+            form_login:
+                check_path: /login_check
+                login_path: /login
+                username_parameter: _email
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path: /logout
+                target: /login
             anonymous: ~
-            # activate different ways to authenticate
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+    access_control:
+        - {path: ^/admin, roles: ROLE_ADMIN}
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+

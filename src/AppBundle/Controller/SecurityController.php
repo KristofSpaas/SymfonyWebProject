@@ -1,10 +1,10 @@
 <?php
-
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 class SecurityController extends Controller
 {
     /**
@@ -17,13 +17,13 @@ class SecurityController extends Controller
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('AppBundle:Security:login.html.twig', array(
-            'last_username' => $lastUsername,
-            'error'         => $error
-        ));
+        return $this->render(
+            'security/login.html.twig',
+            array(
+                // last username entered by the user
+                'error'         => $error,
+            )
+        );
     }
 
     /**
@@ -34,4 +34,11 @@ class SecurityController extends Controller
 
     }
 
+    /**
+     * @Route("/logout")
+     */
+    public function logoutAction()
+    {
+        //no need for code, the security system takes over
+    }
 }
