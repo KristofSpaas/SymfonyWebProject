@@ -27,7 +27,6 @@ class AfsprakenController extends Controller
     public function bookAfspraakAction()
     {
     	$afspraak = new Afspraak();
-	$f
     }
 
 }
