@@ -37,3 +37,6 @@
 
 # Composer PHAR
 /composer.phar
+
+# intellij family
+/.idea/
