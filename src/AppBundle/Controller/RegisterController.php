@@ -37,8 +37,8 @@ class RegisterController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $this->get('app_bundle.user_manager')
                     ->setUserPassword($user, $user->getPassword());
-                $user->setRoles(array('ROLE_DOCTOR'));
-                $user->setIsAdmin(false);
+                $user->setRoles(array('ROLE_PATIENT'));
+                //$user->setIsAdmin(false);
                 $em->persist($user);
                 $em->flush();
 
