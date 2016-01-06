@@ -22,11 +22,22 @@ class AfsprakenController extends Controller
 
     /**
      * @Route("/bookAfspraak")
-     * @Template("AppBundle:Afspraken:bookAfspraak.html.twig")
+     *  Template("AppBundle:Afspraken:bookAfspraak.html.twig")
+     * @method({"GET", "POST"})
      */
-    public function bookAfspraakAction()
+    public function bookAfspraakAction(Request $request)
     {
     	$afspraak = new Afspraak();
+	$form = $this->createForm(AfspraakType::class, $afspraak);
+	$form->handleRequest($request);
+
+	if($form->isSubmitted() && $form->isValid()){
+		$em = $this->getDoctrine()->getManager();
+		
+		return $this->redirectToRoute('showAfspraken', array(id => $user->getId()));
+	}
+
+	return $this->redirectToRoute('showAfspraken', array('user' => $user, 'form' => $form->createView() ));
     }
 
 }
