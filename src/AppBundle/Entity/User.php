@@ -268,5 +268,10 @@ class User implements UserInterface
         $this->roles = $roles;
         return $this;
     }
+
+    public function getFullName()
+    {
+        return $this->getFirstname()." ".$this->getLastname();
+    }
 }
 

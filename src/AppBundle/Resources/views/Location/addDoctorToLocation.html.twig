@@ -1,7 +1,45 @@
-{% extends "::base.html.twig" %}
-
-{% block title %}AppBundle:Location:addDoctorToLocation{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Welcome to the Location:addDoctorToLocation page</h1>
+    <div class="jumbotron myPageHeader">
+        <h1>Add doctor to location</h1>
+    </div>
+
+    <div class="myPageContent">
+        <h2>Lokaal {{ location.lokaalnummer }}</h2>
+
+        <br/>
+
+        <div class="form">
+            {{ form_start(doctor_location_form) }}
+            <div class="form-group">
+                {{ form_label(doctor_location_form.doctors) }}
+                {{ form_widget(doctor_location_form.doctors) }}
+                {{ form_errors(doctor_location_form.doctors) }}
+            </div>
+
+            <input type="submit" value="Add doctor" class="btn btn-lg btn-success"/>
+            {{ form_end(doctor_location_form) }}
+
+
+            {#<div class="col-xs-4">#}
+                {#<label for="users">Doctors:</label>#}
+                {#<select class="form-control" id="users">#}
+                    {#{% for user in users %}#}
+                        {#<option>{{ user.firstname }} {{ user.lastname }}</option>#}
+                    {#{% endfor %}#}
+                {#</select>#}
+            {#</div>#}
+
+
+
+            {#<br/>#}
+            {#<br/>#}
+            {#<br/>#}
+            {#<br/>#}
+        </div>
+        <hr>
+        <a href="{{ path('showLocations') }}" class="btn btn-lg btn-primary">Back to Locations</a>
+    </div>
+
 {% endblock %}

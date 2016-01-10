@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\DoctorLocationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +20,29 @@ class LocationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        //TODO: moet veranderen naar alleen maar dokters
         $locations = $em->getRepository('AppBundle:Location')->findAll();
 
+        $locationsWithUser = array();
+
+        foreach ($locations as $location) {
+            $query = $em->createQuery(
+                'SELECT u
+                 FROM AppBundle:User u
+                 WHERE u.location = :locationId'
+            )->setParameter('locationId', $location->getId());
+
+            $userForLocation = $query->setMaxResults(1)->getOneOrNullResult();
+
+            $locationWithUser = (object) ['id' => $location->getId(),
+                'lokaalnummer' => $location->getLokaalNummer(),
+                'user' => $userForLocation
+            ];
+
+            array_push($locationsWithUser, $locationWithUser);
+        }
+
         return $this->render('AppBundle:Location:showLocations.html.twig', array(
-            'locations' => $locations,
+            'locations' => $locationsWithUser,
         ));
     }
 
@@ -64,6 +83,7 @@ class LocationController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $em->remove($location);
             $em->flush();
         }
@@ -86,11 +106,10 @@ class LocationController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            //add role based on value off checkbox
             $em->persist($location);
             $em->flush();
 
-            return $this->redirectToRoute('showLocations', array('id' => $location->getId()));
+            return $this->redirectToRoute('showLocations');
         }
 
         return $this->render('AppBundle:Location:editLocation.html.twig', array(
@@ -102,16 +121,29 @@ class LocationController extends Controller
 
     /**
      * @Route("/addDoctorToLocation/{id}", name="addDoctorToLocation")
+     * @Method({"GET", "POST"})
      */
-    public function addDoctorToLocationAction()
+    public function addDoctorToLocationAction(Request $request, Location $location)
     {
-        $em = $this->getDoctrine()->getManager();
+        $doctorLocationForm = $this->createForm(DoctorLocationType::class);
+        $doctorLocationForm->handleRequest($request);
 
-        //TODO: moet veranderen naar alleen maar dokters
-        $users = $em->getRepository('AppBundle:User')->findAll();
+        if ($doctorLocationForm->isSubmitted() && $doctorLocationForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $doctor = $doctorLocationForm["doctors"]->getData();
+
+            $user = $em->getRepository('AppBundle:User')->find($doctor->getId());
+
+            $user->setLocation($location->getId());
+            $em->flush();
+
+            return $this->redirectToRoute('showLocations');
+        }
 
         return $this->render('AppBundle:Location:addDoctorToLocation.html.twig', array(
-            'users' => $users,
+            'location' => $location,
+            'doctor_location_form' => $doctorLocationForm->createView(),
         ));
     }
 
@@ -121,6 +153,17 @@ class LocationController extends Controller
             ->setAction($this->generateUrl('deleteLocation', array('id' => $location->getId())))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+    function debug_to_console($data)
+    {
+
+        if (is_array($data))
+            $output = "<script>console.log( 'Debug Objects: " . implode(',', $data) . "' );</script>";
+        else
+            $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
+
+        echo $output;
     }
 
 }

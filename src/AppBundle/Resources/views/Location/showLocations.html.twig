@@ -1,26 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="jumbotron">
+    <div class="jumbotron myPageHeader">
         <h1>Locations</h1>
     </div>
-    <table class="records_list table table-striped">
-        <thead>
-        <tr>
-            <th>Lokaal Nummer</th>
-            <th>Doctor</th>
-            <th>Edit</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for location in locations %}
+    <div class="myPageContent">
+        <a href="{{ path('addLocation') }}" class="btn btn-lg btn-primary">Create a new location</a>
+        <br/>
+        <br/>
+        <table class="records_list table table-striped">
+            <thead>
             <tr>
-                <td>{{ location.lokaalnummer }}</td>
-                <td><a href="{{ path('addDoctorToLocation', { 'id': location.id }) }}" class="btn btn-md btn-primary">Add doctor</a></td>
-                <td><a href="{{ path('editLocation', { 'id': location.id }) }}" class="btn btn-md btn-danger">Edit</a></td>
+                <th>Lokaal Nummer</th>
+                <th>Doctor</th>
+                <th>Edit</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('addLocation') }}" class="btn btn-lg btn-primary">Create a new location</a>
+            </thead>
+            <tbody>
+            {% for location in locations %}
+                <tr>
+                    <td>{{ location.lokaalnummer }}</td>
+                    {% if location.user == null %}
+                        <td><a href="{{ path('addDoctorToLocation', { 'id': location.id }) }}"
+                               class="btn btn-md btn-success">Add doctor</a></td>
+                    {% else %}
+                        <td>{{ location.user.firstname }} {{ location.user.lastname }}</td>
+                    {% endif %}
+                    <td><a href="{{ path('editLocation', { 'id': location.id }) }}"
+                           class="btn btn-md btn-danger">Edit</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
