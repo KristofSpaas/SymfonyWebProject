@@ -30,15 +30,14 @@ class LocationController extends Controller
         $locationsWithUser = array();
 
         foreach ($locations as $location) {
-            $query = $em->createQuery(
-                'SELECT u
-                 FROM AppBundle:User u
-                 WHERE u.location = :locationId'
-            )->setParameter('locationId', $location->getId());
+            $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
+                ->where('u.location = :location')
+                ->setParameter('location', $location->getId())
+                ->getQuery();
 
             $userForLocation = $query->setMaxResults(1)->getOneOrNullResult();
 
-            $locationWithUser = (object) ['id' => $location->getId(),
+            $locationWithUser = (object)['id' => $location->getId(),
                 'lokaalnummer' => $location->getLokaalNummer(),
                 'user' => $userForLocation
             ];
@@ -133,9 +132,21 @@ class LocationController extends Controller
         $doctorLocationForm = $this->createForm(DoctorLocationType::class);
         $doctorLocationForm->handleRequest($request);
 
-        if ($doctorLocationForm->isSubmitted() && $doctorLocationForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
+        $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
+            ->where('u.location = :location')
+            ->setParameter('location', $location->getId())
+            ->getQuery();
+
+        $currentUser = $query->setMaxResults(1)->getOneOrNullResult();
+
+        if ($currentUser != null) {
+            $currentUser->setLocation(0);
+            $em->flush();
+        }
+
+        if ($doctorLocationForm->isSubmitted() && $doctorLocationForm->isValid()) {
             $doctor = $doctorLocationForm["doctors"]->getData();
 
             $user = $em->getRepository('AppBundle:User')->find($doctor->getId());
@@ -152,7 +163,8 @@ class LocationController extends Controller
         ));
     }
 
-    private function createDeleteForm(Location $location)
+    private
+    function createDeleteForm(Location $location)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('deleteLocation', array('id' => $location->getId())))

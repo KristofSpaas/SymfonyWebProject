@@ -227,7 +227,7 @@ class User implements UserInterface
     /**
      * Set location
      *
-     * @param string $location
+     * @param int $location
      *
      * @return User
      */
@@ -241,7 +241,7 @@ class User implements UserInterface
     /**
      * Get location
      *
-     * @return string
+     * @return int
      */
     public function getLocation()
     {

@@ -13,6 +13,7 @@
             <tr>
                 <th>Lokaal Nummer</th>
                 <th>Doctor</th>
+                <th></th>
                 <th>Edit</th>
             </tr>
             </thead>
@@ -20,12 +21,15 @@
             {% for location in locations %}
                 <tr>
                     <td>{{ location.lokaalnummer }}</td>
-                    {% if location.user == null %}
-                        <td><a href="{{ path('addDoctorToLocation', { 'id': location.id }) }}"
-                               class="btn btn-md btn-success">Add doctor</a></td>
-                    {% else %}
+                    {% if location.user != null %}
                         <td>{{ location.user.firstname }} {{ location.user.lastname }}</td>
+                    {% else %}
+                        <td></td>
                     {% endif %}
+                    <td><a href="{{ path('addDoctorToLocation', { 'id': location.id }) }}"
+                           class="btn btn-md btn-success">Change doctor</a>
+                    </td>
+
                     <td><a href="{{ path('editLocation', { 'id': location.id }) }}"
                            class="btn btn-md btn-danger">Edit</a></td>
                 </tr>

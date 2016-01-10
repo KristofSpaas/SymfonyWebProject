@@ -52,7 +52,7 @@ class UserController extends Controller
                 ->setUserPassword($user, $user->getPassword());
 
             //add role based on value off checkbox
-            $user->setRoles(array('ROLE_PATIENT'));
+            $user->setRoles(array('ROLE_DOCTOR'));
             $em->persist($user);
             $em->flush();
 
