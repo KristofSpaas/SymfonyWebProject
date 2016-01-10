@@ -80,6 +80,13 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="location", type="integer", nullable=true)
+     */
+    private $location = null;
+
+    /**
      * @return null
      */
     public function getSalt()
@@ -215,6 +222,30 @@ class User implements UserInterface
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set location
+     *
+     * @param string $location
+     *
+     * @return User
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 
     public function eraseCredentials()

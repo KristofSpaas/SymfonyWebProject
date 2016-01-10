@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'AppBundle:Form:Formthemeoverwrite.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1>Create location</h1>
+    </div>
+    <div class="form">
+        {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
+        <div class="form-group">
+            {{ form_label(form.lokaalnummer) }}
+            {{ form_widget(form.lokaalnummer) }}
+            {{ form_errors(form.lokaalnummer) }}
+        </div>
+
+        <input type="submit" value="Create" class="btn btn-lg btn-primary"/>
+        {{ form_end(form) }}
+    </div>
+    <hr />
+    <a href="{{ path('showLocations') }}">Back to the list</a>
+
+{% endblock %}
