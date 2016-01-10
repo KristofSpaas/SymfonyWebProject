@@ -11,6 +11,11 @@ use AppBundle\Entity\Location;
 use AppBundle\Form\LocationType;
 
 
+/**
+ * Location controller.
+ *
+ * @Route("/location", name="location")
+ */
 class LocationController extends Controller
 {
     /**

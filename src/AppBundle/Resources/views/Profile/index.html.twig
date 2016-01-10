@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron myPageHeader">
+        <h1>Welcome on your profile page, {{ user.firstname }}</h1>
+    </div>
+    <div class="myPageContent">
+        <table class="records_list table table-striped">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th colspan="2">Editing</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><a href="{{ path('profile_edit') }}" class="btn btn-md btn-danger">EDIT</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

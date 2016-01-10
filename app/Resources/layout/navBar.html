@@ -13,17 +13,19 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/">Home</a></li>
-                <li><a href="/showAfspraken">Afspraken</a></li>
+                <li><a href="/showAfspraken">Appointments</a></li>
                 <li><a href="/team">Team</a></li>
-                <li><a href="/showLocations">Locaties</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="/location/showLocations">Locations</a></li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-right navbar-nav">
                 {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="/admin">Admin</a></li>
-
                 {% endif %}
 
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li><a href="/profile">Profile</a></li>
                 <li><a href="/logout">Logout</a></li>
                 {% else %}
                 <li><a href="/register">Register</a></li>

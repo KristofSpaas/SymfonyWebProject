@@ -37,10 +37,7 @@
             {{ form_end(edit_form) }}
         </div>
         <hr />
-        <a href="{{ path('admin') }}">Back to the list</a>
+        <a href="{{ path('profile') }}">Back to your profile</a>
         <hr />
-        {{ form_start(delete_form) }}
-            <input type="submit" value="Delete" class="btn btn-lg btn-danger">
-        {{ form_end(delete_form) }}
     </div>
 {% endblock %}

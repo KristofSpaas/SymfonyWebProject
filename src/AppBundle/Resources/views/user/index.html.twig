@@ -1,31 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="jumbotron">
+    <div class="jumbotron myPageHeader">
         <h1>Doctor list</h1>
     </div>
-    <table class="records_list table table-striped">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th colspan="2">Editing</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td><a href="{{ path('admin_show', { 'id': user.id }) }}">{{ user.username }}</a></td>
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.lastname }}</td>
-                <td>{{ user.email }}</td>
-                <td><a href="{{ path('admin_show', { 'id': user.id }) }}" class="btn btn-md btn-primary">SHOW</a></td>
-                <td><a href="{{ path('admin_edit', { 'id': user.id }) }}" class="btn btn-md btn-primary">EDIT</a></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('admin_new') }}" class="btn btn-lg btn-primary">Create a new doctor</a>
+    <div class="myPageContent">
+        <table class="records_list table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th colspan="2"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><a href="{{ path('admin_show', { 'id': user.id }) }}">{{ user.username }}</a></td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><a href="{{ path('admin_show', { 'id': user.id }) }}" class="btn btn-md btn-success">SHOW</a></td>
+                    <td><a href="{{ path('admin_edit', { 'id': user.id }) }}" class="btn btn-md btn-danger">EDIT</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('admin_new') }}" class="btn btn-lg btn-primary">Create a new doctor</a>
+    </div>
 {% endblock %}
