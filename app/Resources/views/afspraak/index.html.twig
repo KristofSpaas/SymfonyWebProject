@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Afspraak list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Bezet</th>
+                <th>Comment</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for afspraak in afspraaks %}
+            <tr>
+                <td><a href="{{ path('afspraak_show', { 'id': afspraak.id }) }}">{{ afspraak.id }}</a></td>
+                <td>{% if entity.bezet %}Yes{% else %}No{% endif %}</td>
+                <td>{{ afspraak.comment }}</td>
+                <td>{% if afspraak.date %}{{ afspraak.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('afspraak_show', { 'id': afspraak.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('afspraak_edit', { 'id': afspraak.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('afspraak_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
