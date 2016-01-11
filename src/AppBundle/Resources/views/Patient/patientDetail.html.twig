@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="jumbotron myPageHeader">
-        <h1>Doctor</h1>
+        <h1>Patient</h1>
     </div>
     <div class="myPageContent">
         {{ form_start(delete_form) }}
@@ -51,9 +51,11 @@
             </tr>
             </tbody>
         </table>
-        <a href="{{ path('admin_edit',{'id':user.id}) }}" class="btn btn-lg btn-success">Edit</a>
 
-        <hr/>
-        <a class="btn btn-lg btn-primary" href="{{ path('admin') }}">Back to Doctors</a>
+        <a href="{{ path('editPatient',{'id':user.id}) }}" class="btn btn-lg btn-success">Edit</a>
+
+        <hr />
+        <a class="btn btn-lg btn-primary" href="{{ path('showPatients') }}">Back to Patients</a>
+
     </div>
 {% endblock %}

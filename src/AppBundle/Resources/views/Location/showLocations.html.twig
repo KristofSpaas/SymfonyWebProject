@@ -5,7 +5,7 @@
         <h1>Locations</h1>
     </div>
     <div class="myPageContent">
-        <a href="{{ path('addLocation') }}" class="btn btn-lg btn-primary">Create a new location</a>
+        <a href="{{ path('addLocation') }}" class="btn btn-lg btn-primary">Add Location</a>
         <br/>
         <br/>
         <table class="records_list table table-striped">
@@ -27,11 +27,11 @@
                         <td></td>
                     {% endif %}
                     <td><a href="{{ path('addDoctorToLocation', { 'id': location.id }) }}"
-                           class="btn btn-md btn-success">Change doctor</a>
+                           class="btn btn-md btn-primary">Change doctor</a>
                     </td>
 
                     <td><a href="{{ path('editLocation', { 'id': location.id }) }}"
-                           class="btn btn-md btn-danger">Edit</a></td>
+                           class="btn btn-md btn-success">Edit</a></td>
                 </tr>
             {% endfor %}
             </tbody>
