@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Doctor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -26,8 +27,13 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        //TODO: moet veranderen naar alleen maar dokters
-        $users = $em->getRepository('AppBundle:User')->findAll();
+        $doctors = $em->getRepository('AppBundle:Doctor')->findAll();
+
+        $users = array();
+
+        foreach ($doctors as $doctor) {
+            array_push($users, $doctor->getUser());
+        }
 
         return $this->render('AppBundle:user:index.html.twig', array(
             'users' => $users,
@@ -54,6 +60,12 @@ class UserController extends Controller
             //add role based on value off checkbox
             $user->setRoles(array('ROLE_DOCTOR'));
             $em->persist($user);
+            $em->flush();
+
+            $doctor = new Doctor();
+            $doctor->setUser($user);
+
+            $em->persist($doctor);
             $em->flush();
 
             return $this->redirectToRoute('admin_show', array('id' => $user->getId()));
@@ -100,7 +112,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('admin_edit', array('id' => $user->getId()));
+            return $this->redirectToRoute('admin_show', array('id' => $user->getId()));
         }
 
         return $this->render('AppBundle:user:edit.html.twig', array(
@@ -123,6 +135,26 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $query = $em->getRepository('AppBundle:Doctor')->createQueryBuilder('d')
+                ->where('d.user = :id')
+                ->setParameter('id', $user)
+                ->getQuery();
+
+            $doctor = $query->setMaxResults(1)->getOneOrNullResult();
+
+            $query2 = $em->getRepository('AppBundle:Location')->createQueryBuilder('l')
+                ->where('l.doctor = :id')
+                ->setParameter('id', $doctor)
+                ->getQuery();
+
+            $location = $query2->setMaxResults(1)->getOneOrNullResult();
+
+            $location->setDoctor(null);
+            $em->persist($doctor);
+            $em->flush();
+
+            $em->remove($doctor);
             $em->remove($user);
             $em->flush();
         }
@@ -142,7 +174,16 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('admin_delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
+    }
+
+    function debug_to_console($data)
+    {
+        if (is_array($data))
+            $output = "<script>console.log( 'Debug Objects: " . implode(',', $data) . "' );</script>";
+        else
+            $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
+
+        echo $output;
     }
 }

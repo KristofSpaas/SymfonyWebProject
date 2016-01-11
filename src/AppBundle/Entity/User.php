@@ -4,8 +4,9 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * User
@@ -79,12 +80,12 @@ class User implements UserInterface
      */
     private $password;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="location", type="integer", nullable=true)
-     */
-    private $location = null;
+//    /**
+//     * @var int
+//     *
+//     * @ORM\Column(name="location", type="integer", nullable=true)
+//     */
+//    private $location = null;
 
     /**
      * @return null
@@ -224,29 +225,29 @@ class User implements UserInterface
         return $this->password;
     }
 
-    /**
-     * Set location
-     *
-     * @param int $location
-     *
-     * @return User
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
-    /**
-     * Get location
-     *
-     * @return int
-     */
-    public function getLocation()
-    {
-        return $this->location;
-    }
+//    /**
+//     * Set location
+//     *
+//     * @param int $location
+//     *
+//     * @return User
+//     */
+//    public function setLocation($location)
+//    {
+//        $this->location = $location;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get location
+//     *
+//     * @return int
+//     */
+//    public function getLocation()
+//    {
+//        return $this->location;
+//    }
 
     public function eraseCredentials()
     {

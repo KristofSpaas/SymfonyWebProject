@@ -20,7 +20,7 @@ class DoctorLocationType extends AbstractType
     {
         $builder
             ->add('doctors', EntityType::class, array(
-                'class' => 'AppBundle:User',
+                'class' => 'AppBundle:Doctor',
                 'choice_label' => 'fullname',
                 'required' => true,
                 'attr' => array(

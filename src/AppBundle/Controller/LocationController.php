@@ -30,16 +30,16 @@ class LocationController extends Controller
         $locationsWithUser = array();
 
         foreach ($locations as $location) {
-            $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
-                ->where('u.location = :location')
-                ->setParameter('location', $location->getId())
-                ->getQuery();
+            $doctor = $location->getDoctor();
+            $user = null;
 
-            $userForLocation = $query->setMaxResults(1)->getOneOrNullResult();
+            if ($doctor != null) {
+                $user = $doctor->getUser();
+            }
 
             $locationWithUser = (object)['id' => $location->getId(),
                 'lokaalnummer' => $location->getLokaalNummer(),
-                'user' => $userForLocation
+                'user' => $user
             ];
 
             array_push($locationsWithUser, $locationWithUser);
@@ -89,12 +89,7 @@ class LocationController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
-                ->where('u.location = :location')
-                ->setParameter('location', $location->getId())
-                ->getQuery();
-
-            $currentDoctor = $query->setMaxResults(1)->getOneOrNullResult();
+            $currentDoctor = $location->getDoctor();
 
             if ($currentDoctor != null) {
                 $currentDoctor->setLocation(null);
@@ -148,12 +143,7 @@ class LocationController extends Controller
         if ($doctorLocationForm->isSubmitted() && $doctorLocationForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
-                ->where('u.location = :location')
-                ->setParameter('location', $location->getId())
-                ->getQuery();
-
-            $currentDoctor = $query->setMaxResults(1)->getOneOrNullResult();
+            $currentDoctor = $location->getDoctor();
 
             if ($currentDoctor != null) {
                 $currentDoctor->setLocation(null);
@@ -162,10 +152,10 @@ class LocationController extends Controller
 
             $doctor = $doctorLocationForm["doctors"]->getData();
 
-            $user = $em->getRepository('AppBundle:User')->find($doctor->getId());
-
-            $user->setLocation($location->getId());
+            $location->setDoctor($doctor);
             $em->flush();
+
+            $this->debug_to_console(serialize($doctor));
 
             return $this->redirectToRoute('showLocations');
         }

@@ -28,6 +28,12 @@ class Location
      */
     private $lokaalNummer;
 
+    /**
+     * @var Doctor
+     * @ORM\OneToOne(targetEntity="Doctor", inversedBy="location")
+     * @ORM\JoinColumn(name="locationId", referencedColumnName="id")
+     */
+    private $doctor;
 
     /**
      * Get id
@@ -62,5 +68,29 @@ class Location
     {
         return $this->lokaalNummer;
     }
+
+    /**
+     * Set doctor
+     *
+     * @param Doctor $doctor
+     * @return Location
+     */
+    public function setDoctor($doctor)
+    {
+        $this->doctor = $doctor;
+
+        return $this;
+    }
+
+    /**
+     * Get doctor
+     *
+     * @return Doctor
+     */
+    public function getDoctor()
+    {
+        return $this->doctor;
+    }
+
 }
 
