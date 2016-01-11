@@ -79,6 +79,7 @@ class LocationController extends Controller
 
     /**
      * @Route("/deleteLocation/{id}", name="deleteLocation")
+     * @Method({"GET", "POST", "DELETE"})
      */
     public function deleteLocationAction(Request $request, Location $location)
     {
@@ -87,6 +88,18 @@ class LocationController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
+                ->where('u.location = :location')
+                ->setParameter('location', $location->getId())
+                ->getQuery();
+
+            $currentDoctor = $query->setMaxResults(1)->getOneOrNullResult();
+
+            if ($currentDoctor != null) {
+                $currentDoctor->setLocation(null);
+                $em->flush();
+            }
 
             $em->remove($location);
             $em->flush();
@@ -98,8 +111,8 @@ class LocationController extends Controller
     /**
      * Displays a form to edit an existing Location entity.
      *
-     * @Route("editLocation/{id}", name="editLocation")
-     * @Method({"GET", "POST"})
+     * @Route("/editLocation/{id}", name="editLocation")
+     * @Method({"GET", "POST", "DELETE"})
      */
     public function editLocationAction(Request $request, Location $location)
     {
