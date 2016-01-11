@@ -34,6 +34,7 @@ security:
     access_control:
         - {path: ^/admin, roles: ROLE_ADMIN}
         - {path: ^/location, roles: ROLE_ADMIN}
+        - {path: ^/patient, roles: ROLE_DOCTOR}
 
 
 
