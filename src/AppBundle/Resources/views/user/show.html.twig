@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="jumbotron myPageHeader">
-        <h1>Doctor</h1>
+        <h1>Doctor {{ user.fullname }}</h1>
     </div>
     <div class="myPageContent">
         {{ form_start(delete_form) }}

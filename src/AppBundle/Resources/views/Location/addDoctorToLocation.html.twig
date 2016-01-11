@@ -6,8 +6,17 @@
     </div>
 
     <div class="myPageContent">
-        <h2>Room {{ location.lokaalnummer }}</h2>
-
+        <h2>Room {{ location.lokaalnummer }}
+            {% if user != null %}
+                 - {{ user.fullname }}
+            {% endif %}
+        </h2>
+        {% if user != null %}
+            {{ form_start(delete_form) }}
+            <input type="submit" value="Remove Doctor" class="btn btn-lg btn-danger pull-right">
+            {{ form_end(delete_form) }}
+        {% endif %}
+        <br/>
         <br/>
 
         <div class="form">
@@ -17,7 +26,7 @@
                 {{ form_widget(doctor_location_form.doctors) }}
                 {{ form_errors(doctor_location_form.doctors) }}
             </div>
-
+            <br>
             <input type="submit" value="Add Doctor" class="btn btn-lg btn-success"/>
             {{ form_end(doctor_location_form) }}
 

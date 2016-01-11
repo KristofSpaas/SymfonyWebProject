@@ -139,6 +139,13 @@ class LocationController extends Controller
     {
         $doctorLocationForm = $this->createForm(DoctorLocationType::class);
         $doctorLocationForm->handleRequest($request);
+        $deleteForm = $this->createDeleteDoctorForm($location);
+        $doctor = $location->getDoctor();
+        $user = null;
+
+        if($doctor != null) {
+            $user = $doctor->getUser();
+        }
 
         if ($doctorLocationForm->isSubmitted() && $doctorLocationForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -163,14 +170,42 @@ class LocationController extends Controller
         return $this->render('AppBundle:Location:addDoctorToLocation.html.twig', array(
             'location' => $location,
             'doctor_location_form' => $doctorLocationForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+            'user' => $user,
         ));
     }
 
-    private
-    function createDeleteForm(Location $location)
+    /**
+     * @Route("/deleteDoctorFromLocation/{id}", name="deleteDoctorFromLocation")
+     * @Method({"DELETE"})
+     */
+    public function deleteDoctorFromLocationAction(Request $request, Location $location)
+    {
+        $form = $this->createDeleteDoctorForm($location);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $location->setDoctor(null);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('showLocations');
+    }
+
+    private function createDeleteForm(Location $location)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('deleteLocation', array('id' => $location->getId())))
+            ->setMethod('DELETE')
+            ->getForm();
+    }
+
+    private function createDeleteDoctorForm(Location $location)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('deleteDoctorFromLocation', array('id' => $location->getId())))
             ->setMethod('DELETE')
             ->getForm();
     }
