@@ -21,10 +21,10 @@ class LocationType extends AbstractType
     {
         $builder
             ->add('lokaalnummer',TextType::class,array(
-                'label' => "Lokaal Nummer",
+                'label' => "Room",
                 'required' => true,
                 'attr' => array(
-                    "placeholder" => "Enter lokaal nummer",
+                    "placeholder" => "Enter room number",
                     "class" => 'form-control'
                 )
             ))

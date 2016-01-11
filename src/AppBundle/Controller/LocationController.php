@@ -132,21 +132,21 @@ class LocationController extends Controller
         $doctorLocationForm = $this->createForm(DoctorLocationType::class);
         $doctorLocationForm->handleRequest($request);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
-            ->where('u.location = :location')
-            ->setParameter('location', $location->getId())
-            ->getQuery();
-
-        $currentUser = $query->setMaxResults(1)->getOneOrNullResult();
-
-        if ($currentUser != null) {
-            $currentUser->setLocation(0);
-            $em->flush();
-        }
-
         if ($doctorLocationForm->isSubmitted() && $doctorLocationForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $query = $em->getRepository('AppBundle:User')->createQueryBuilder('u')
+                ->where('u.location = :location')
+                ->setParameter('location', $location->getId())
+                ->getQuery();
+
+            $currentDoctor = $query->setMaxResults(1)->getOneOrNullResult();
+
+            if ($currentDoctor != null) {
+                $currentDoctor->setLocation(null);
+                $em->flush();
+            }
+
             $doctor = $doctorLocationForm["doctors"]->getData();
 
             $user = $em->getRepository('AppBundle:User')->find($doctor->getId());

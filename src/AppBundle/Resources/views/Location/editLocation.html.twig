@@ -6,13 +6,6 @@
         <h1>Edit location</h1>
     </div>
     <div class="myPageContent">
-        {{ form_start(delete_form) }}
-        <input type="submit" value="Delete" class="btn btn-lg btn-danger pull-right">
-        {{ form_end(delete_form) }}
-
-        <br/>
-        <br/>
-
         <div class="form" >
             {{ form_start(edit_form) }}
             <div class="form-group">
@@ -21,11 +14,14 @@
                 {{ form_errors(edit_form.lokaalnummer) }}
             </div>
             <input type="submit" value="Update" class="btn btn-lg btn-success">
+
+            {{ form_start(delete_form) }}
+            <input type="submit" value="Delete" class="btn btn-lg btn-danger">
+            {{ form_end(delete_form) }}
             {{ form_end(edit_form) }}
         </div>
         <hr/>
         <a class="btn btn-lg btn-primary" href="{{ path('showLocations') }}">Back to Locations</a>
-        <hr/>
     </div>
 
 {% endblock %}

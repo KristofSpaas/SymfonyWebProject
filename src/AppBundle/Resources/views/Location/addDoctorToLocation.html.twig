@@ -6,7 +6,7 @@
     </div>
 
     <div class="myPageContent">
-        <h2>Lokaal {{ location.lokaalnummer }}</h2>
+        <h2>Room {{ location.lokaalnummer }}</h2>
 
         <br/>
 
@@ -21,22 +21,6 @@
             <input type="submit" value="Add doctor" class="btn btn-lg btn-success"/>
             {{ form_end(doctor_location_form) }}
 
-
-            {#<div class="col-xs-4">#}
-                {#<label for="users">Doctors:</label>#}
-                {#<select class="form-control" id="users">#}
-                    {#{% for user in users %}#}
-                        {#<option>{{ user.firstname }} {{ user.lastname }}</option>#}
-                    {#{% endfor %}#}
-                {#</select>#}
-            {#</div>#}
-
-
-
-            {#<br/>#}
-            {#<br/>#}
-            {#<br/>#}
-            {#<br/>#}
         </div>
         <hr>
         <a href="{{ path('showLocations') }}" class="btn btn-lg btn-primary">Back to Locations</a>
