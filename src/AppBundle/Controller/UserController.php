@@ -9,41 +9,70 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
+use AppBundle\Utility\Paginator;
 
 /**
  * User controller.
  *
- * @Route("/admin", name="admin")
+ * @Route("/doctor", name="doctor")
  */
 class UserController extends Controller
 {
     /**
      * Lists all User entities.
      *
-     * @Route("/", name="admin")
+     * @Route("/list/{page}/{key}",defaults={"page" = 1, "key" = null}, name="doctor")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction($page, $key)
     {
         $em = $this->getDoctrine()->getManager();
+        $rpp = $this->container->getParameter('doctors_per_page');
+        $repo = $em->getRepository('AppBundle:Doctor');
+        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key);
+        $paginator = new Paginator($page, $totalcount, $rpp);
+        $pagelist = $paginator->getPagesList();
 
-        $doctors = $em->getRepository('AppBundle:Doctor')->findAll();
-
-        $users = array();
-
-        foreach ($doctors as $doctor) {
-            array_push($users, $doctor->getUser());
-        }
 
         return $this->render('AppBundle:user:index.html.twig', array(
-            'users' => $users,
-        ));
+            'doctors' => $res,
+            'paginator' => $pagelist,
+            'cur' => $page,
+            'total' => $paginator->getTotalPages(),
+            'key'=>$key));
+    }
+
+    /**
+     * Lists all User entities.
+     *
+     * @Route("/search", name="doctor_search")
+     * @Method({"GET","POST"})
+     */
+    public function searchAction(Request $request)
+    {
+        $q = $request->request->all(); // Get the posted data
+
+        $page = 1; // Get which page to display
+        $key = $q['key']; // Get the search criteria
+
+        $em = $this->getDoctrine()->getManager();
+        $rpp = $this->container->getParameter('doctors_per_page');
+
+        $repo = $em->getRepository('AppBundle:Doctor');
+
+        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key);
+
+        $paginator = new Paginator($page, $totalcount, $rpp);
+        $pagelist = $paginator->getPagesList();
+
+        return $this->render('AppBundle:user:index.html.twig', array('doctors' => $res, 'paginator' => $pagelist, 'cur' => $page, 'total' => $paginator->getTotalPages(), 'key' => $key));
+
     }
 
     /**
      * Creates a new User entity.
      *
-     * @Route("/new", name="admin_new")
+     * @Route("/new", name="doctor_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -68,7 +97,7 @@ class UserController extends Controller
             $em->persist($doctor);
             $em->flush();
 
-            return $this->redirectToRoute('admin_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('doctor_show', array('id' => $user->getId()));
         }
 
         return $this->render('AppBundle:user:new.html.twig', array(
@@ -80,7 +109,7 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="admin_show")
+     * @Route("/{id}", name="doctor_show")
      * @Method("GET")
      */
     public function showAction(User $user)
@@ -96,7 +125,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="admin_edit")
+     * @Route("/{id}/edit", name="doctor_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, User $user)
@@ -112,7 +141,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('admin_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('doctor_show', array('id' => $user->getId()));
         }
 
         return $this->render('AppBundle:user:edit.html.twig', array(
@@ -125,7 +154,7 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
-     * @Route("/{id}", name="admin_delete")
+     * @Route("/{id}", name="doctor_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, User $user)
@@ -159,7 +188,7 @@ class UserController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin');
+        return $this->redirectToRoute('doctor');
     }
 
     /**
@@ -172,7 +201,7 @@ class UserController extends Controller
     private function createDeleteForm(User $user)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_delete', array('id' => $user->getId())))
+            ->setAction($this->generateUrl('doctor_delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
             ->getForm();
     }
