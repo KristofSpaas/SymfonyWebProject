@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Afspraken
+ * Afspraak
  *
  * @ORM\Table(name="afspraken")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AfsprakenRepository")
  */
-class Afspraken
+class Afspraak
 {
     /**
      * @var int
@@ -22,22 +22,22 @@ class Afspraken
     private $id;
 
     /**
-     * @var int
+     * @var Doctor
      *
-     *  ORM\Column(name="dokterId", type="integer")
-     * @ORM\ManyToOne(targetEntity="User",inversedBy="users")
-     * @ORM\JoinColumn(name="dokterid", referencedColumnName="id")
+     *  ORM\Column(name="doctorId", type="integer")
+     * @ORM\ManyToOne(targetEntity="Doctor")
+     * ORM\JoinColumn(name="doctorid", referencedColumnName="id")
      */
-    private $dokterId;
+    private $doctor;
 
     /**
-     * @var int
+     * @var Patient
      *
      *  ORM\Column(name="patientId", type="integer")
-     * @ORM\ManyToOne(targetEntity="User",inversedBy="users")
-     * @ORM\JoinColumn(name="patientid", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Patient")
+     * ORM\JoinColumn(name="patientid", referencedColumnName="id")
      */
-    private $patientId;
+    private $patient;
 
     /**
      * @var bool
@@ -71,27 +71,27 @@ class Afspraken
     }
 
     /**
-     * Set dokterId
+     * Set doctorId
      *
-     * @param integer $dokterId
+     * @param integer $doctorId
      *
      * @return Afspraken
      */
-    public function setDokterId($dokterId)
+    public function setDoctor($doctorId)
     {
-        $this->dokterId = $dokterId;
+        $this->doctor = $doctorId;
 
         return $this;
     }
 
     /**
-     * Get dokterId
+     * Get doctorId
      *
      * @return int
      */
-    public function getDokterId()
+    public function getDoctor()
     {
-        return $this->dokterId;
+        return $this->doctor;
     }
 
     /**
@@ -101,9 +101,9 @@ class Afspraken
      *
      * @return Afspraken
      */
-    public function setPatientId($patientId)
+    public function setPatient($patientId)
     {
-        $this->patientId = $patientId;
+        $this->patient = $patientId;
 
         return $this;
     }
@@ -113,33 +113,33 @@ class Afspraken
      *
      * @return int
      */
-    public function getPatientId()
+    public function getPatient()
     {
-        return $this->patientId;
+        return $this->patient;
     }
 
     /**
-     * Set lokaal
+     * Set date
      *
-     * @param string $lokaal
+     * @param string $date
      *
      * @return Afspraken
      */
-    public function setLokaal($lokaal)
+    public function setDate($date)
     {
-        $this->lokaal = $lokaal;
+        $this->date = $date;
 
         return $this;
     }
 
     /**
-     * Get lokaal
+     * Get date
      *
      * @return string
      */
-    public function getLokaal()
+    public function getDate()
     {
-        return $this->lokaal;
+        return $this->date;
     }
 
     /**
@@ -173,9 +173,9 @@ class Afspraken
      *
      * @return Afspraken
      */
-    public function setText($text)
+    public function setComment($comment)
     {
-        $this->text = $text;
+        $this->comment = $comment;
 
         return $this;
     }
@@ -185,9 +185,9 @@ class Afspraken
      *
      * @return string
      */
-    public function getText()
+    public function getComment()
     {
-        return $this->text;
+        return $this->comment;
     }
 }
 

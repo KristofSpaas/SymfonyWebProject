@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'AppBundle:Form:Formthemeoverwrite.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron myPageHeader">
+        <h1>Register with us!</h1>
+    </div>
+    <div class="myPageContent">
+        <div class="form">
+            {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
+            <div class="form-group">
+                {{ form_label(form.doctor) }}
+                {{ form_widget(form.doctor) }}
+                {{ form_errors(form.doctor) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.patient) }}
+                {{ form_widget(form.patient) }}
+                {{ form_errors(form.patient) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.comment) }}
+                {{ form_widget(form.comment) }}
+                {{ form_errors(form.comment) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.bezet) }}
+                {{ form_widget(form.bezet) }}
+                {{ form_errors(form.bezet) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.date) }}
+                {{ form_widget(form.date) }}
+                {{ form_errors(form.date) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
