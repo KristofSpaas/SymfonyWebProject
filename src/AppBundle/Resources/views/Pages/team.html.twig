@@ -10,8 +10,18 @@
     {% endblock %}
 
     {% block javascripts %}
-        <script type="text/javascript" src="{{ asset('js/jquery-1.11.2.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+        {{  parent() }}
+
+        <script>
+            $.hisrc.speedTest({speedTestUri: '/images/50K.jpg'});
+
+            $(document).ready(function () {
+                $(".hisrc img").hisrc({
+                    useTransparentGif: true,
+                    speedTestUri: '/images/50K.jpg'
+                });
+            });
+        </script>
     {% endblock %}
 {% endblock %}
 
@@ -32,7 +42,10 @@
                     <div id="members">
                         <div class="member one-third column">
                             <div class="thumbnail">
-                                <img width="254" height="254" src="images/user.png"/>
+                                <div class="hisrc">
+                                    <img width="254" height="254" src="images/user75.png" data-1x="images/user150.png"
+                                         data-2x="images/user300.png">
+                                </div>
                             </div>
                             <h2>Rafael Tureluren</h2>
 
@@ -47,7 +60,10 @@
                         </div>
                         <div class="member one-third column">
                             <div class="thumbnail">
-                                <img width="254" height="254" src="images/user.png"/>
+                                <div class="hisrc">
+                                    <img width="254" height="254" src="images/user75.png" data-1x="images/user150.png"
+                                         data-2x="images/user300.png">
+                                </div>
                             </div>
                             <h2>Kristof Spaas</h2>
 
@@ -62,7 +78,10 @@
                         </div>
                         <div class="member one-third column">
                             <div class="thumbnail">
-                                <img width="254" height="254" src="images/user.png"/>
+                                <div class="hisrc">
+                                    <img width="254" height="254" src="images/user75.png" data-1x="images/user150.png"
+                                         data-2x="images/user300.png">
+                                </div>
                             </div>
                             <h2>Lander Ghekiere</h2>
 

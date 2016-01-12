@@ -67,3 +67,14 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+assetic:
+  debug: '%kernel.debug%'
+  use_controller: true
+  filters:
+    cssrewrite: ~
+    uglifycss:
+      bin: js/node_modules/uglifycss/bin/uglifycss
+    uglifyjs2:
+      # the path to the uglifyjs executable
+      bin: js/node_modules/uglify-js/bin/uglifyjs

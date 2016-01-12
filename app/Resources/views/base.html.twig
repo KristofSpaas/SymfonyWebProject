@@ -2,12 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        {% block title %}Den Docteur{% endblock %}
+        {% block title %}Den Dokteur{% endblock %}
 
         {% block stylesheets %}
-            <link href="{{ asset('css/opmaak.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/opmaak2.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
+            {% stylesheets 'css/*' filter='?uglifycss' filter='cssrewrite' %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
         {% endblock %}
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -16,13 +16,13 @@
         {% include 'layout/navBar.html' only %}
         <div class="body-container">
             {% block body %}
-
             {% endblock %}
         </div>
 
         {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('js/jquery-1.11.2.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+            {% javascripts 'js/jquery-1.11.2.js' 'js/bootstrap.min.js' 'js/*' filter='?uglifyjs2' %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
         {% endblock %}
     </body>
 </html>
