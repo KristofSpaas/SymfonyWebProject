@@ -43,17 +43,15 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User entities.
-     *
      * @Route("/search", name="doctor_search")
      * @Method({"GET","POST"})
      */
     public function searchAction(Request $request)
     {
-        $q = $request->request->all(); // Get the posted data
+        $q = $request->request->all();
 
-        $page = 1; // Get which page to display
-        $key = $q['key']; // Get the search criteria
+        $page = 1;
+        $key = $q['key'];
 
         $em = $this->getDoctrine()->getManager();
         $rpp = $this->container->getParameter('doctors_per_page');
@@ -65,13 +63,16 @@ class UserController extends Controller
         $paginator = new Paginator($page, $totalcount, $rpp);
         $pagelist = $paginator->getPagesList();
 
-        return $this->render('AppBundle:user:index.html.twig', array('doctors' => $res, 'paginator' => $pagelist, 'cur' => $page, 'total' => $paginator->getTotalPages(), 'key' => $key));
+        return $this->render('AppBundle:user:index.html.twig', array(
+            'doctors' => $res,
+            'paginator' => $pagelist,
+            'cur' => $page,
+            'total' => $paginator->getTotalPages(),
+            'key' => $key));
 
     }
 
     /**
-     * Creates a new User entity.
-     *
      * @Route("/new", name="doctor_new")
      * @Method({"GET", "POST"})
      */

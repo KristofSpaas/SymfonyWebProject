@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Utility\Paginator;
+
 
 /**
  * Patient controller.
@@ -18,24 +20,55 @@ use Symfony\Component\HttpFoundation\Request;
 class PatientController extends Controller
 {
     /**
-     * @Route("/showPatients", name="showPatients")
+     * @Route("/showPatients/{page}/{key}", defaults={"page" = 1, "key" = null}, name="showPatients")
      * @Method("GET")
      */
-    public function showPatientsAction()
+    public function showPatientsAction($page, $key)
     {
         $em = $this->getDoctrine()->getManager();
+        $rpp = $this->container->getParameter('patients_per_page');
+        $repo = $em->getRepository('AppBundle:Patient');
+        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key);
+        $paginator = new Paginator($page, $totalcount, $rpp);
+        $pagelist = $paginator->getPagesList();
 
-        $patients = $em->getRepository('AppBundle:Patient')->findAll();
-
-        $users = array();
-
-        foreach ($patients as $patient) {
-            array_push($users, $patient->getUser());
-        }
 
         return $this->render('AppBundle:Patient:showPatients.html.twig', array(
-            'users' => $users,
-        ));
+            'patients' => $res,
+            'paginator' => $pagelist,
+            'cur' => $page,
+            'total' => $paginator->getTotalPages(),
+            'key'=>$key));
+    }
+
+    /**
+     * @Route("/search", name="patient_search")
+     * @Method({"GET","POST"})
+     */
+    public function searchAction(Request $request)
+    {
+        $q = $request->request->all();
+
+        $page = 1;
+        $key = $q['key'];
+
+        $em = $this->getDoctrine()->getManager();
+        $rpp = $this->container->getParameter('patients_per_page');
+
+        $repo = $em->getRepository('AppBundle:Patient');
+
+        list($res, $totalcount) = $repo->getResultAndCount($page, $rpp, $key);
+
+        $paginator = new Paginator($page, $totalcount, $rpp);
+        $pagelist = $paginator->getPagesList();
+
+        return $this->render('AppBundle:Patient:showPatients.html.twig', array(
+            'patients' => $res,
+            'paginator' => $pagelist,
+            'cur' => $page,
+            'total' => $paginator->getTotalPages(),
+            'key' => $key));
+
     }
 
     /**

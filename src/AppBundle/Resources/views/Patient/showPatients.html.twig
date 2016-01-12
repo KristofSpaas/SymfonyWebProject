@@ -5,33 +5,69 @@
         <h1>Patients</h1>
     </div>
     <div class="myPageContent">
-        <a href="{{ path('addPatient') }}" class="btn btn-lg btn-primary">Add Patient</a>
+        <div class="row">
+            <div class="col-md-2">
+                <a href="{{ path('addPatient') }}" class="btn btn-lg btn-primary">Add Patient</a>
+            </div>
+            <div class="col-md-10">
+                <form class="form-inline" method="post" action="{{path('patient_search')}}" name="searchform" id="searchform">
+                    <div class="form-group">
+                        <input type="text"  class="form-control" required="required" placeholder="" name="key" id="key" value="{{key}}"/>
+                        <input type="hidden" name="cur" id="cur" value="{{cur}}"/>
+                    </div>
+                    <button type="submit" class="btn btn-default">Search</button>
+
+                </form>
+            </div>
+        </div>
         <br/>
         <br/>
-        <table class="records_list table table-striped">
-            <thead>
-            <tr>
-                <th>Username</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th colspan="2"></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
+        <div class="row">
+            <table class="records_list table table-striped">
+                <thead>
                 <tr>
-                    <td><a href="{{ path('patientDetail', { 'id': user.id }) }}">{{ user.username }}</a></td>
-                    <td>{{ user.firstname }}</td>
-                    <td>{{ user.lastname }}</td>
-                    <td>{{ user.email }}</td>
-                    <td><a href="{{ path('patientDetail', { 'id': user.id }) }}" class="btn btn-md btn-primary">SHOW</a>
-                    </td>
-                    <td><a href="{{ path('editPatient', { 'id': user.id }) }}" class="btn btn-md btn-success">EDIT</a>
-                    </td>
+                    <th>Username</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th colspan="2"></th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for patient in patients %}
+                    <tr>
+                        <td><a href="{{ path('patientDetail', { 'id': patient.user.id }) }}">{{ patient.user.username }}</a></td>
+                        <td>{{ patient.user.firstname }}</td>
+                        <td>{{ patient.user.lastname }}</td>
+                        <td>{{ patient.user.email }}</td>
+                        <td><a href="{{ path('patientDetail', { 'id':patient.user.id }) }}" class="btn btn-md btn-primary">SHOW</a>
+                        </td>
+                        <td><a href="{{ path('editPatient', { 'id': patient.user.id }) }}" class="btn btn-md btn-success">EDIT</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pager">
+                    <ul>
+                        <li class="previous"><a href="{{path('showPatients', {'page':1, 'key':key})}}">First</a></li>
+                        {%if cur==1%}
+                            <li class="previous disabled"><a href="{{path('showPatients', {'page':cur-1, 'key':key})}}">Previous</a></li>
+                        {%else%}
+                            <li class="previous"><a href="{{path('showPatients', {'page':cur-1, 'key':key})}}">Previous</a></li>
+                        {%endif%}
+                        {%if cur==total%}
+                            <li class="previous disabled"><a href="{{path('showPatients', {'page':cur, 'key':key})}}">Next</a></li>
+                        {%else%}
+                            <li class="previous"><a href="{{path('showPatients', {'page':cur+1, 'key': key})}}">Next</a></li>
+                        {%endif%}
+                        <li class="previous"><a href="{{path('showPatients', {'page':total, 'key':key})}}">Last</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

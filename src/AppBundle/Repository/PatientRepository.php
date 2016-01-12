@@ -10,4 +10,42 @@ namespace AppBundle\Repository;
  */
 class PatientRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getResultAndCount($page, $rpp, $key=null)
+    {
+        // patient count
+        $em = $this->getEntityManager();
+        if ($key == 'null')
+        {
+            $q1 = $em->createQuery('select count(d.id) dc from AppBundle:Patient d');
+        }
+        else
+        {
+            $qstr = sprintf("select count(d.id) dc
+                             from AppBundle:Patient d
+                             join AppBundle:User u
+                             with d.user = u.id
+                             where u.lastname
+                             like '%s%%'", $key);
+            $q1 = $em->createQuery($qstr);
+        }
+        $res1 = $q1->getSingleResult();
+        $count = $res1['dc'];
+
+        // Search results
+        $repo = $em->getRepository('AppBundle:Patient');
+        $q2 = $repo->createQueryBuilder('r')
+            ->setMaxResults($rpp)
+            ->setFirstResult(($page - 1) * $rpp)
+            ->orderBy('r.id', 'desc');
+        if ($key <> 'null')
+        {
+            $key = $key . '%';
+            $q2->join('r.user','u','WITH','u.lastname like :key')
+                ->setParameter('key', $key);
+        }
+        $q2 = $q2->getQuery();
+        $res2 = $q2->getResult();
+        return array($res2, $count);
+
+    }
 }

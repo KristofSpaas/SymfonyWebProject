@@ -12,7 +12,7 @@ class DoctorRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getResultAndCount($page, $rpp, $key=null)
     {
-        // Get the doctor count
+        // doctor count
         $em = $this->getEntityManager();
         if ($key == 'null')
         {
@@ -30,7 +30,8 @@ class DoctorRepository extends \Doctrine\ORM\EntityRepository
         }
         $res1 = $q1->getSingleResult();
         $count = $res1['dc'];
-        // Now get the wanted result specified by page
+
+        // Search results
         $repo = $em->getRepository('AppBundle:Doctor');
         $q2 = $repo->createQueryBuilder('r')
             ->setMaxResults($rpp)
