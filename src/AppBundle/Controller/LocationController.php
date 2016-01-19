@@ -143,7 +143,7 @@ class LocationController extends Controller
         $doctor = $location->getDoctor();
         $user = null;
 
-        if($doctor != null) {
+        if ($doctor != null) {
             $user = $doctor->getUser();
         }
 
@@ -158,6 +158,18 @@ class LocationController extends Controller
             }
 
             $doctor = $doctorLocationForm["doctors"]->getData();
+
+            $query = $em->getRepository('AppBundle:Location')->createQueryBuilder('l')
+                ->where('l.doctor = :id')
+                ->setParameter('id', $doctor)
+                ->getQuery();
+
+            $currentLocation = $query->setMaxResults(1)->getOneOrNullResult();
+
+            if ($currentLocation != null) {
+                $currentLocation->setDoctor(null);
+                $em->flush();
+            }
 
             $location->setDoctor($doctor);
             $em->flush();
