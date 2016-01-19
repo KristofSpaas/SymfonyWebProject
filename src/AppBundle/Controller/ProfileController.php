@@ -7,6 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\UserType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use AppBundle\Entity\ProfileImage;
+
 
 /**
  * Profile controller.
@@ -57,5 +60,32 @@ class ProfileController extends Controller
             'user' => $user,
             'edit_form' => $editForm->createView(),
         ));
+    }
+
+    /**
+     * @Template()
+     * @Route("/upload", name="profile_upload")
+     * @Method({"GET", "POST"})
+     */
+    public function uploadAction(Request $request)
+    {
+        $profileImage = new ProfileImage();
+        $form = $this->createFormBuilder($profileImage)
+            ->add('name')
+            ->add('file')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($profileImage);
+            $em->flush();
+
+            return $this->redirectToRoute('profile');
+        }
+
+        return array('form' => $form->createView());
     }
 }

@@ -11,6 +11,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
 use AppBundle\Utility\Paginator;
 
+
 /**
  * User controller.
  *
@@ -216,4 +217,7 @@ class UserController extends Controller
 
         echo $output;
     }
+
+
+
 }

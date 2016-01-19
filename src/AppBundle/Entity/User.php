@@ -274,5 +274,7 @@ class User implements UserInterface
     {
         return $this->getFirstname()." ".$this->getLastname();
     }
+
+
 }
 
