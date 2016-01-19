@@ -19,6 +19,12 @@ class ProfileImage
      */
     public $id;
 
+    /**
+     * @var User
+     * @ORM\OneToOne(targetEntity="User", inversedBy="user")
+     * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+     */
+    private $user;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -29,7 +35,7 @@ class ProfileImage
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    public $path;
+    public $path = '/images/defaultProfileImage.png';
 
     /**
      * @Assert\File(maxSize="6000000")
@@ -145,4 +151,60 @@ class ProfileImage
         // when displaying uploaded doc/image in the view.
         return 'uploads/profileImages';
     }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     * @return ProfileImage
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Get path
+     *
+     * @return path
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function setPath($path)
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
 }

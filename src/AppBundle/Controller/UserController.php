@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Doctor;
+use AppBundle\Entity\ProfileImage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -90,14 +91,24 @@ class UserController extends Controller
 
             //add role based on value off checkbox
             $user->setRoles(array('ROLE_DOCTOR'));
+
+            $image = new ProfileImage();
+            $image->setPath('/images/defaultProfileImage.png');
+            $image->setName('test');
+
+            $em->persist($image);
+            $em->flush();
+
+            $user->setImage($image);
+
             $em->persist($user);
             $em->flush();
 
             $doctor = new Doctor();
             $doctor->setUser($user);
-
             $em->persist($doctor);
             $em->flush();
+
 
             return $this->redirectToRoute('doctor_show', array('id' => $user->getId()));
         }
