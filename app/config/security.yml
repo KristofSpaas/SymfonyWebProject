@@ -35,6 +35,8 @@ security:
         - {path: ^/doctor, roles: ROLE_ADMIN}
         - {path: ^/location, roles: ROLE_ADMIN}
         - {path: ^/patient, roles: ROLE_DOCTOR}
+        - {path: ^/profile, roles: ROLE_PATIENT}
+
 
 
 

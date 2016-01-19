@@ -80,6 +80,13 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @var ProfileImage
+     * @ORM\OneToOne(targetEntity="ProfileImage")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $image;
+
 //    /**
 //     * @var int
 //     *
@@ -223,6 +230,17 @@ class User implements UserInterface
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public function setImage($image){
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
     }
 
 //    /**
