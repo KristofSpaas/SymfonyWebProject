@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Location
  *
  * @ORM\Table(name="location")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LocationRepository")
+ * @UniqueEntity("lokaalNummer", message="That room number is already taken")
  */
 class Location
 {
@@ -24,7 +28,9 @@ class Location
     /**
      * @var int
      *
-     * @ORM\Column(name="LokaalNummer", type="integer")
+     * @ORM\Column(name="lokaalNummer", type="integer")
+     * @Assert\NotBlank(message="You must enter a room number")
+     * @Assert\Type(type="integer", message="Room number has to be a number")
      */
     private $lokaalNummer;
 
