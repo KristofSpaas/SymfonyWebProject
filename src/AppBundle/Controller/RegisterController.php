@@ -51,7 +51,20 @@ class RegisterController extends Controller
 
                 $request->getSession()
                     ->getFlashBag()
-                    ->add('success','You are registred, please log in');
+                    ->add('success','You are registerd, please log in');
+
+		$message = \Swift_Message::newInstance()
+			->setSubject('Registration confirmation')
+			->setFrom('dendokteur@gmail.com')
+			->setTo("dendokteur@gmail.com")
+			->setBody(
+				$this->renderView(
+					'AppBundle:emails:registration.html.twig',
+					array('name' => $user->getUsername()),
+					'text/html'));
+		// send email
+		$this->get('mailer')->send($message);
+
 
                 return $this->redirect($this->generateUrl('login_route'));
             }

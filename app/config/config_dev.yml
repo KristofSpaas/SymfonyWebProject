@@ -9,7 +9,7 @@ framework:
 
 web_profiler:
     toolbar: true
-    intercept_redirects: false
+    intercept_redirects: true
 
 monolog:
     handlers:
@@ -41,5 +41,8 @@ monolog:
         #    type:   chromephp
         #    level:  info
 
-#swiftmailer:
-#    delivery_address: me@example.com
+swiftmailer:
+        delivery_address: "dendokteur@gmail.com"
+        transport: gmail
+        username:  dendokteur
+        password:  12test34
