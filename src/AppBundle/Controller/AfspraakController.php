@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 class AfspraakController extends Controller
 {
     /**
-     * @Route("/showAfspraken")
+     * @Route("/showAfspraken", name="showAfspraken")
      */
     public function showAfsprakenAction()
     {
@@ -35,10 +35,19 @@ class AfspraakController extends Controller
 	$form = $this->createForm(AfspraakType::class, $afspraak);
 	$form->handleRequest($request);
 
-	if($form->isSubmitted() && $form->isValid()){
+	$user= $this->get('security.token_storage')->getToken()->getUser();
 
-		return $this-redirectToRoute('showAfspraken');
-		}
+	if($form->isSubmitted() && $form->isValid()){
+		$message = \Swift_Message::newInstance()
+		->setSubject("Appointment on dendokteur")
+		->setFrom("dendokteur@gmail.com")
+		->setTo($user->getEmail())
+		->setBody( $this->renderView( 'AppBundle:emails:afspraak.html.twig', array( 'afspraak' => $afspraak)), 'text/html');
+		// TODO: Uncomment this to enable emails
+		// $this->get('mailer')->send($message);
+
+		return $this->redirectToRoute('showAfspraken');
+	}
 
         return $this->render('AppBundle:Afspraak:addAfspraak.html.twig', array(
 	'afspraak' => $afspraak,

@@ -3,7 +3,7 @@
 
 {% block body %}
     <div class="jumbotron myPageHeader">
-        <h1>Register with us!</h1>
+        <h1>Make an appointment</h1>
     </div>
     <div class="myPageContent">
         <div class="form">
@@ -33,6 +33,7 @@
                 {{ form_widget(form.date) }}
                 {{ form_errors(form.date) }}
             </div>
+            <input type="submit" value="Add" class="btn btn-lg btn-success"/>
             {{ form_end(form) }}
         </div>
     </div>
