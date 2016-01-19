@@ -78,3 +78,5 @@ assetic:
     uglifyjs2:
       # the path to the uglifyjs executable
       bin: js/node_modules/uglify-js/bin/uglifyjs
+
+gregwar_captcha: ~

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,6 +23,12 @@ class RegisterController extends Controller
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
+
+        $form->add('captcha', CaptchaType::class, array(
+            'width' => 200,
+            'height' => 50,
+            'length' => 6,
+        ));
 
         $form->remove('isAdmin');
         $form->add('submit',SubmitType::class, array(
