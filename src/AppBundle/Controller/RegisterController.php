@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Gregwar\CaptchaBundle\Type\CaptchaType;
+use AppBundle\Entity\ProfileImage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -44,8 +45,15 @@ class RegisterController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $this->get('app_bundle.user_manager')
                     ->setUserPassword($user, $user->getPassword());
-                $user->setRoles(array('ROLE_ADMIN'));
-                //$user->setIsAdmin(false);
+                $user->setRoles(array('ROLE_PATIENT'));
+
+                $image = new ProfileImage();
+                $image->setPath('defaultProfileImage.png');
+
+                $em->persist($image);
+                $em->flush();
+
+                $user->setImage($image);
                 $em->persist($user);
                 $em->flush();
 

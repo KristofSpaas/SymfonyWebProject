@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Patient;
 use AppBundle\Entity\User;
+use AppBundle\Entity\ProfileImage;
 use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -88,6 +89,15 @@ class PatientController extends Controller
 
             //add role based on value off checkbox
             $user->setRoles(array('ROLE_PATIENT'));
+
+            $image = new ProfileImage();
+            $image->setPath('defaultProfileImage.png');
+
+            $em->persist($image);
+            $em->flush();
+
+            $user->setImage($image);
+
             $em->persist($user);
             $em->flush();
 

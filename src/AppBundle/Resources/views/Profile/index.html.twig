@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
+
 {% block body %}
     <div class="jumbotron myPageHeader">
         <h1>Welcome on your profile page, {{ user.firstname }}</h1>
     </div>
     <div class="myPageContent">
-        <a href="{{ path('profile_upload') }}"><img src="{{ user.image.getPath() }}" class="thumbnail"></a>
+        <a href="{{ path('profile_upload') }}"><img src="/uploads/profileImages/{{ user.image.path }}" class="thumbnail" style="height:160px; width: 160px"></a>
         <table class="records_list table table-striped">
             <thead>
             <tr>

@@ -69,9 +69,10 @@ class ProfileController extends Controller
      */
     public function uploadAction(Request $request)
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         $profileImage = new ProfileImage();
         $form = $this->createFormBuilder($profileImage)
-            ->add('name')
             ->add('file')
             ->getForm();
 
@@ -79,8 +80,10 @@ class ProfileController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
+            $user->setImage($profileImage);
             $em->persist($profileImage);
+            $em->flush();
+            $em->persist($user);
             $em->flush();
 
             return $this->redirectToRoute('profile');

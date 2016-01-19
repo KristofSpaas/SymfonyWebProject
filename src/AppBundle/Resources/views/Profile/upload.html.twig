@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'AppBundle:Form:Formthemeoverwrite.html.twig' %}
 
 
 {% block body %}
@@ -6,10 +7,17 @@
     <h1>Change Profile Image</h1>
 </div>
 <div class="myPageContent">
-    {{ form_start(form) }}
+    {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
+    <div class="form-group">
+        {{ form_errors(form.file) }}
+        {{ form_widget(form.file) }}
+    </div>
     <input type="submit" value="Update" class="btn btn-lg btn-primary" />
 
     {{ form_end(form) }}
-    </div>
+    <hr />
+    <a href="{{ path('profile') }}">Back to your profile</a>
+    <hr />
+</div>
 
 {% endblock %}

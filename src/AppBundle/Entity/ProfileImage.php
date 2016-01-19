@@ -27,18 +27,17 @@ class ProfileImage
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
-    public $name;
+    protected $path;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    public $path = '/images/defaultProfileImage.png';
-
-    /**
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(
+     *      maxSize = "5M",
+     *      mimeTypes = {"image/jpeg","image/png"},
+     *      maxSizeMessage = "The maxmimum allowed file size is 5MB.",
+     *      mimeTypesMessage = "Only jpeg and png images are allowed."
+     * )
      */
     private $file;
 
@@ -74,43 +73,49 @@ class ProfileImage
     }
 
     /**
+     * Called before saving the entity
+     *
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function preUpload()
     {
-        if (null !== $this->getFile()) {
-            $this->path = $this->getFile()->guessExtension();
+        if (null !== $this->file) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->path = $filename.'.'.$this->file->guessExtension();
         }
     }
 
+
     /**
+     * Called after entity persistence
+     *
      * @ORM\PostPersist()
      * @ORM\PostUpdate()
      */
     public function upload()
     {
-        if (null === $this->getFile()) {
+        // The file property can be empty if the field is not required
+        if (null === $this->file) {
             return;
         }
 
-        // check if we have an old image
-        if (isset($this->temp)) {
-            // delete the old image
-            unlink($this->temp);
-            // clear the temp image path
-            $this->temp = null;
-        }
+        // Use the original file name here but you should
+        // sanitize it at least to avoid any security issues
 
-        // you must throw an exception here if the file cannot be moved
-        // so that the entity is not persisted to the database
-        // which the UploadedFile move() method does
-        $this->getFile()->move(
+        // move takes the target directory and then the
+        // target filename to move to
+        $this->file->move(
             $this->getUploadRootDir(),
-            $this->id.'.'.$this->getFile()->guessExtension()
+            $this->path
         );
 
-        $this->setFile(null);
+        // Set the path property to the filename where you've saved the file
+        //$this->path = $this->file->getClientOriginalName();
+
+        // Clean up the file property as you won't need it anymore
+        $this->file = null;
     }
 
     /**
@@ -122,12 +127,14 @@ class ProfileImage
     }
 
     /**
-     * @ORM\PostRemove()
+     * Called before entity removal
+     *
+     * @ORM\PreRemove()
      */
     public function removeUpload()
     {
-        if (isset($this->temp)) {
-            unlink($this->temp);
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
         }
     }
 
@@ -191,20 +198,5 @@ class ProfileImage
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
 
 }

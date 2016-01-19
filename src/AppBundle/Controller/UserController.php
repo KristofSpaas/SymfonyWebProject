@@ -93,8 +93,7 @@ class UserController extends Controller
             $user->setRoles(array('ROLE_DOCTOR'));
 
             $image = new ProfileImage();
-            $image->setPath('/images/defaultProfileImage.png');
-            $image->setName('test');
+            $image->setPath('defaultProfileImage.png');
 
             $em->persist($image);
             $em->flush();
