@@ -25,11 +25,10 @@
             {% else %}
               {% set color = '#90c3d4' %}
             {%endif%}
-            <td style="border:0px solid;background-color:{{color}};">
-              {{ i }}:{{m * 15}}
-              <a href="#">
-                <!-- TODO: fix link zodat die naar juiste appointment date verwijst-->
-                <button > click me! </button>
+            <!-- TODO: verplaats dit naar een aparte css -->
+            <td style="border:0px solid;background-color:{{color}};font-size:12px">
+              <a href="#" >
+                {{ i }}:{{m * 15}}
               </a>
             </td>
           {% endfor %}
