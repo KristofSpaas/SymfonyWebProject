@@ -3,6 +3,40 @@
 {% block title %}AppBundle:Afspraak:showAfspraken{% endblock %}
 
 {% block body %}
-<h1 style='padding: 20px;'>Welcome to the Afspraak:showAfspraken page</h1>
-<a href="/addAfspraak">add appointment </a>
+  <h1 style='padding: 20px;'>Welcome! Please pick an appointment date</h1>
+  <a href="/addAfspraak">add appointment </a>
+  <table style="width:90%;">
+    <tr>
+      {% for day in days %}
+        <th>
+          {{day}}
+        </th>
+      {% endfor %}
+    </tr>
+    {% for i in 9..18 %}
+      {% for m in 0..3 %}
+        <tr>
+          {% for y in 1..7 %}
+            <script>
+              //console.log("{{m}} % 2: " + {{m}} % 2);
+            </script>
+            {% if m % 2 == 1 %}
+              {% set color = '#b6e3f2 ' %}
+            {% else %}
+              {% set color = '#90c3d4' %}
+            {%endif%}
+            <td style="border:0px solid;background-color:{{color}};">
+              {{ i }}:{{m * 15}}
+              <a href="#">
+                <!-- TODO: fix link zodat die naar juiste appointment date verwijst-->
+                <button > click me! </button>
+              </a>
+            </td>
+          {% endfor %}
+
+        </tr>
+      {% endfor %}
+    {% endfor %}
+
+  </table>
 {% endblock %}

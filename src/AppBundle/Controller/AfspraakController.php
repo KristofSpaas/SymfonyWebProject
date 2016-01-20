@@ -16,8 +16,9 @@ class AfspraakController extends Controller
      */
     public function showAfsprakenAction()
     {
-        return $this->render('AppBundle:Afspraak:showAfspraken.html.twig', array(
-            // ...
+        $appointments = [];
+        $days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        return $this->render('AppBundle:Afspraak:showAfspraken.html.twig', array( 'days' => $days
         ));
     }
 
@@ -30,7 +31,7 @@ class AfspraakController extends Controller
     	$em = $this->getDoctrine()->getManager();
 	$doctors = $em->getRepository("AppBundle:Doctor")->findAll();
 	$patients = $em->getRepository("AppBundle:Patient")->findAll();
-	
+
 	$afspraak = new Afspraak();
 	$form = $this->createForm(AfspraakType::class, $afspraak);
 	$form->handleRequest($request);
