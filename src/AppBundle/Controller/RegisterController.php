@@ -65,11 +65,15 @@ class RegisterController extends Controller
 			->setSubject('Registration confirmation')
 			->setFrom('dendokteur@gmail.com')
 			->setTo("dendokteur@gmail.com")
+			->setContentType('text/html')
 			->setBody(
 				$this->renderView(
 					'AppBundle:emails:registration.html.twig',
-					array('name' => $user->getUsername()),
-					'text/html'));
+					array(
+						'name' => $user->getUsername()
+					),
+					'text/html')
+				);
 		// send email
 		$this->get('mailer')->send($message);
 
