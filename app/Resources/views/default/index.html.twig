@@ -9,7 +9,7 @@
     <div class="div-not-transparent myPageContent">
         <div class="container">
             <div class="row">
-                <h1>Welkom bij Den Dokteur, meet our Doctors</h1>
+                <h1>Welcome at Den Dokteur, meet our Doctors</h1>
                 <br>
                 <br>
             </div>
@@ -21,7 +21,7 @@
                             <img src="/uploads/profileImages/{{ doctor.user.image.path }}" class="thumbnail" style="height:250px;margin:auto">
                         </a>
                         <br>
-                        <a href="{{ path('profile_edit') }}" class="btn btn-md btn-primary" >Maak een afspraak</a>
+                        <a href="{{ path('addAfspraak',{'id': doctor.id } ) }}" class="btn btn-md btn-primary" >Make an appointment</a>
                         <hr>
                     </div>
                 {% endfor %}
