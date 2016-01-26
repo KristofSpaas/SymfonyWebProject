@@ -43,6 +43,7 @@ class AfspraakController extends Controller
 		->setSubject("Appointment on dendokteur")
 		->setFrom("dendokteur@gmail.com")
 		->setTo($user->getEmail())
+		->setContentType('text/html')
 		->setBody( $this->renderView( 'AppBundle:emails:afspraak.html.twig', array( 'afspraak' => $afspraak)), 'text/html');
 		// TODO: Uncomment this to enable emails
 		// $this->get('mailer')->send($message);
