@@ -45,7 +45,7 @@ class RegisterController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $this->get('app_bundle.user_manager')
                     ->setUserPassword($user, $user->getPassword());
-                $user->setRoles(array('ROLE_PATIENT'));
+                $user->setRoles(array('ROLE_ADMIN'));
 
                 $image = new ProfileImage();
                 $image->setPath('defaultProfileImage.png');

@@ -80,10 +80,12 @@ class ProfileController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $user->setImage($profileImage);
+
             $em->persist($profileImage);
-            $em->flush();
             $em->persist($user);
+
             $em->flush();
 
             return $this->redirectToRoute('profile');
