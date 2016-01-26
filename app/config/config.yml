@@ -74,9 +74,9 @@ assetic:
   filters:
     cssrewrite: ~
     uglifycss:
-      bin: js/node_modules/uglifycss/bin/uglifycss
+      bin: node_modules/uglifycss/bin/uglifycss
     uglifyjs2:
       # the path to the uglifyjs executable
-      bin: js/node_modules/uglify-js/bin/uglifyjs
+      bin: node_modules/uglify-js/bin/uglifyjs
 
 gregwar_captcha: ~
