@@ -58,8 +58,7 @@ class RegisterController extends Controller
 
                 $request->getSession()
                     ->getFlashBag()
-                    ->add('success', 'You are registerd, please log in');
-
+                    ->add('success', 'You are registered, please log in');
 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Registration confirmation')

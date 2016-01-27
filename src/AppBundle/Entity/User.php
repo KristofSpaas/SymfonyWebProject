@@ -293,6 +293,15 @@ class User implements UserInterface
         return $this->getFirstname()." ".$this->getLastname();
     }
 
+    public function fromArray($data)
+    {
+        foreach ($data as $key => $value) {
+            $method = 'set' . ucfirst($key);
+            $this->$method($value);
+        }
+
+        return $this;
+    }
 
 }
 
