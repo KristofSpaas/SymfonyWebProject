@@ -7,7 +7,26 @@
         <div id="div-transparent"></div>
     </div>
     <div class="div-not-transparent myPageContent">
-        <h1>Welkom bij Den Dokteur </h1>
+        <div class="container">
+            <div class="row">
+                <h1>Welcome at Den Dokteur, meet our Doctors</h1>
+                <br>
+                <br>
+            </div>
+            <div class="row">
+                {% for doctor in doctors %}
+                    <div class="col-xs-12 col-sm-6 col-md-3" style="text-align: center">
+                        <h4>Dr. {{ doctor.user.lastname }}</h4>
+                        <a href="{{ path('profile_upload') }}">
+                            <img src="/uploads/profileImages/{{ doctor.user.image.path }}" class="thumbnail" style="height:250px;margin:auto">
+                        </a>
+                        <br>
+                        <a href="{{ path('addAfspraak',{'id': doctor.id } ) }}" class="btn btn-md btn-primary" >Make an appointment</a>
+                        <hr>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
 {% endblock %}
