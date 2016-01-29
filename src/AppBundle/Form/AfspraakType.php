@@ -10,9 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-
-
-
 class AfspraakType extends AbstractType
 {
     /**
@@ -70,13 +67,12 @@ class AfspraakType extends AbstractType
 	    	'label' => 'Date',
                 'required' => true,
                 'attr' => array(
-                    "class" => 'form-control'
                 ),
             'minutes' => array(0,15,30,45),
             'hours' => range(9, 16),
             'years' => range($year, $year+1),
             'months' => range($month, 12),
-            'days' => range($day, 31),
+            //'days' => range($day, 31),
             ))
         ;
     }

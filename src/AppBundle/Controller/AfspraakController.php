@@ -78,6 +78,7 @@ class AfspraakController extends Controller
         return $this->render('AppBundle:Afspraak:addAfspraak.html.twig', array(
             'afspraak' => $afspraak,
             'form' => $form->createView(),
+            'doctorName' => $doctor->getUser()->getFullName()
         ));
     }
 
