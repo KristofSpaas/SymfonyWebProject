@@ -16,10 +16,27 @@ class AfspraakController extends Controller
      */
     public function showAfsprakenAction()
     {
-        $appointments = [];
-        $days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-        return $this->render('AppBundle:Afspraak:showAfspraken.html.twig', array( 'days' => $days
-        ));
+        $em = $this->getDoctrine()->getManager();
+        $afspraken = $em->getRepository("AppBundle:Afspraak")->findAll();
+        // TODO: alleen de afspraken dooresturen van de ingelogde dokter
+        dump($afspraken);
+        $user= $this->get('security.token_storage')->getToken()->getUser();
+        dump($user);
+
+        // TODO; verbeter authenticatie check (roles)
+        if( $user != 'anon.' && $user->getRoles()[0] == 'ROLE_DOCTOR'){
+
+            $days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+            return $this->render('AppBundle:Afspraak:showAfspraken.html.twig', array(
+                'days' => $days,
+                'afspraken' => $afspraken
+            ));
+
+         }else{
+            // Overkill?<
+            return $this->redirectToRoute('/');
+
+        }
     }
 
     /**
