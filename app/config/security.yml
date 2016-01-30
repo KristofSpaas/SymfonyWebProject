@@ -37,6 +37,7 @@ security:
         - {path: ^/patient, roles: ROLE_DOCTOR}
         - {path: ^/profile, roles: ROLE_PATIENT}
         - {path: ^/addAfspraak, roles: ROLE_PATIENT}
+        - {path: ^/showAfspraken, roles: ROLE_DOCTOR}
 
 
 
