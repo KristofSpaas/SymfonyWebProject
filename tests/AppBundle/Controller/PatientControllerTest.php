@@ -9,7 +9,7 @@ class PatientControllerTest extends WebTestCase
     public function testShowpatients()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
@@ -24,11 +24,11 @@ class PatientControllerTest extends WebTestCase
     public function testEditpatient()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
-        $crawler = $client->request('GET', '/patient/15/editPatient');
+        $crawler = $client->request('GET', '/patient/1/editPatient');
 
         $this->assertGreaterThan(
             0,
@@ -39,22 +39,22 @@ class PatientControllerTest extends WebTestCase
     public function testPatientdetail()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
-        $crawler = $client->request('GET', '/patient/15');
+        $crawler = $client->request('GET', '/patient/3');
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Patient Spaas")')->count()
+            $crawler->filter('html:contains("Patient Patient")')->count()
         );
     }
 
     public function testAddpatient()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
@@ -68,7 +68,7 @@ class PatientControllerTest extends WebTestCase
 
     public function testNotFound() {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 

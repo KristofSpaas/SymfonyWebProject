@@ -9,7 +9,7 @@ class LocationControllerTest extends WebTestCase
     public function testShowlocations()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
@@ -24,7 +24,7 @@ class LocationControllerTest extends WebTestCase
     public function testAddlocation()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
@@ -38,11 +38,11 @@ class LocationControllerTest extends WebTestCase
     public function testAdddoctortolocation()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
-        $crawler = $client->request('GET', 'location/addDoctorToLocation/9');
+        $crawler = $client->request('GET', 'location/addDoctorToLocation/1');
 
         $this->assertGreaterThan(
             0,
@@ -51,7 +51,7 @@ class LocationControllerTest extends WebTestCase
 
     public function testNotFound() {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 

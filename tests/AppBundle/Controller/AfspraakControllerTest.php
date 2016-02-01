@@ -9,7 +9,7 @@ class AfspraakControllerTest extends WebTestCase
     public function testShowafspraken()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'patient@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
@@ -17,14 +17,14 @@ class AfspraakControllerTest extends WebTestCase
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Welcome! Please pick an appointment date")')->count()
+            $crawler->filter('html:contains("Welcome! Please pick an appointment")')->count()
         );
     }
 
     public function testAddafspraak()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'doctor@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
@@ -32,13 +32,13 @@ class AfspraakControllerTest extends WebTestCase
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Make an appointment")')->count()
+            $crawler->filter('html:contains("Add appointment")')->count()
         );
     }
 
     public function testNotFound() {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
