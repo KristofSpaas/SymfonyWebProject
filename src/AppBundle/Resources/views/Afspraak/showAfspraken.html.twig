@@ -1,32 +1,112 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Afspraak:showAfspraken{% endblock %}
-
 {% block body %}
-  <h1 style='padding: 20px;'>Welcome! Please pick an appointment date</h1>
-  <a href="/addAfspraak">add appointment </a>
-  <table style="width:90%;">
-    <tr>
-      {% for day in days %}
-        <th>
-          {{day}}
-        </th>
-      {% endfor %}
-    </tr>
-    {% for afspraak in afspraken %}
-      <tr>
-        {% for i in range(1, afspraak.date.format('w') )%}
-          <td> PLACEHOLDER</td>
-        {% endfor %}
+    <div class="jumbotron myPageHeader">
+        <h1>Welcome! Please pick an appointment</h1>
+    </div>
+    <div class="myPageContent">
+        <table class="calendar table table-bordered" id="myTable">
+            <tr>
+                <th></th>
+                {% for day in days %}
+                    <th style="width: 13%">
+                        {{ day }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for i in 0..5 %}
+                <tr>
+                    <td>{{ hours[i] }}</td>
+                    {% for j in 0..6 %}
+                        <td class="text-center">
+                            {% if afspraken[i][j] != null %}
+                                {% if afspraken[i][j].bezet == true %}
+                                    {% if  afspraken[i][j].patient.id == patientId %}
+                                        <strong>Doctor:</strong>
+                                        <br/>
+                                        {{ afspraken[i][j].doctor.fullname }}
+                                        <br/>
+                                        <br/>
+                                        <strong>Symptoms:</strong>
+                                        <br/>
+                                        {{ afspraken[i][j].comment }}
+                                        <br/>
+                                        <br/>
+                                        <a class="btn btn-danger" href="/unBookAfspraak/{{ afspraken[i][j].id }}">
+                                            Unbook
+                                        </a>
+                                    {% else %}
+                                        <strong style="color: red">Booked</strong>
+                                    {% endif %}
+                                {% else %}
+                                    {{ form_start(form) }}
+                                    <!-- Button trigger modal -->
+                                    <strong>Doctor:</strong>
+                                    <br/>
+                                    {{ afspraken[i][j].doctor.fullname }}
+                                    <br/>
+                                    <br/>
+                                    <button type="button" class="btn btn-success btn" data-toggle="modal"
+                                            data-target="#myModal">
+                                        Book
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade text-left" id="myModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span
+                                                                aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Book appointment</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        {{ form_label(form.symptoms) }}
+                                                        {{ form_widget(form.symptoms) }}
+                                                        {{ form_errors(form.symptoms) }}
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-success">Book</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ form_end(form) }}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
-        <td>
-          {# afspraak.date.format('w') #}
-          {{ afspraak.date.format('H') }} : {{ afspraak.date.format('i')}}
+    <script>
+        var table = document.getElementById('myTable');
+        var cells = table.getElementsByTagName("td");
 
-        </td>
-      </tr>
-    {% endfor %}
+        var rowIndex = 0;
+        var cellIndex = 0;
 
-  </table>
+        for (var i = 1; i < cells.length; i++) {
+            // Cell Object
+            var cell = cells[i];
+            // Track with onclick
+            cell.onclick = function () {
+                if (this.cellIndex != 1 || this.parentNode.rowIndex != 1) {
+                    cellIndex = this.cellIndex;
+                    rowIndex = this.parentNode.rowIndex;
+                }
+                bookAppointment();
+            }
+        }
 
+        function bookAppointment() {
+            $('#book_afspraak_row').val(rowIndex - 1);
+            $('#book_afspraak_col').val(cellIndex - 1);
+        }
+    </script>
 {% endblock %}

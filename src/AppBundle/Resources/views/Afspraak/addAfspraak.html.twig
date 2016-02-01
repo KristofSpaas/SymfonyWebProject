@@ -1,47 +1,99 @@
-{% extends 'base.html.twig' %}
-{% form_theme form 'AppBundle:Form:Formthemeoverwrite.html.twig' %}
+{% extends "::base.html.twig" %}
 
-  {% block body %}
+{% block body %}
     <div class="jumbotron myPageHeader">
-      <h1>Make an appointment</h1>
+        <h1>Add appointment</h1>
     </div>
     <div class="myPageContent">
-      <div class="form">
-        {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
-          <label>Doctor:  </label>
-        <div class="form-control">
-          {{ doctorName }}
-          {# form_label(form.doctor) #}
-          {# form_widget(form.doctor) #}
-          {# form_errors(form.doctor) #}
-        </div>
-        <!--
-            <div class="form-group">
-              {# form_label(form.patient) #}
-              {# form_widget(form.patient) #}
-              {# form_errors(form.patient) #}
-            </div>
-            -->
-            <div class="form-group">
-              {{ form_label(form.comment) }}
-              {{ form_widget(form.comment) }}
-              {{ form_errors(form.comment) }}
-            </div>
+        <table class="calendar table table-bordered" id="myTable">
+            <tr>
+                <th></th>
+                {% for day in days %}
+                    <th style="width: 13%">
+                        {{ day }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for i in 0..5 %}
+                <tr>
+                    <td>{{ hours[i] }}</td>
+                    {% for j in 0..6 %}
+                        <td class="text-center">
+                            {% if afspraken[i][j] != null %}
+                                {% if  afspraken[i][j].doctor.id == doctorId %}
+                                    <strong>Doctor:</strong>
+                                    <br/>
+                                    Me
+                                    <br/>
+                                    <br/>
+                                    <a class="btn btn-danger" href="/deleteAfspraak/{{ afspraken[i][j].id }}">
+                                        Delete
+                                    </a>
+                                {% else %}
+                                    <strong>Doctor:</strong>
+                                    <br/>
+                                    {{ afspraken[i][j].doctor.fullname }}
+                                {% endif %}
+                            {% else %}
+                                {{ form_start(form) }}
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-success btn" data-toggle="modal"
+                                        data-target="#myModal">
+                                    Add
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade text-left" id="myModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Add appointment</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to add an appointment at this time slot?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-success">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ form_end(form) }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
 
-            <!--
-                <div class="form-group">
-                  {# form_label(form.bezet) #}
-                  {# form_widget(form.bezet) #}
-                  {# form_errors(form.bezet) #}
-            </div
-            -->
-            <div class="form-group" style="height:200px;">
-                {{ form_label(form.date) }}
-                {{ form_widget(form.date) }}
-                {{ form_errors(form.date) }}
-            </div>
-            <input type="submit" value="Add" class="btn btn-lg btn-success"/>
-            {{ form_end(form) }}
-        </div>
+        </table>
     </div>
+
+    <script>
+        var table = document.getElementById('myTable');
+        var cells = table.getElementsByTagName("td");
+
+        var rowIndex = 0;
+        var cellIndex = 0;
+
+        for (var i = 1; i < cells.length; i++) {
+            // Cell Object
+            var cell = cells[i];
+            // Track with onclick
+            cell.onclick = function () {
+                if (this.cellIndex != 1 || this.parentNode.rowIndex != 1) {
+                    cellIndex = this.cellIndex;
+                    rowIndex = this.parentNode.rowIndex;
+                }
+                setAppointment();
+            }
+        }
+
+        function setAppointment() {
+            $('#create_afspraak_day').val(cellIndex - 1);
+            $('#create_afspraak_hour').val(rowIndex - 1);
+        }
+    </script>
 {% endblock %}

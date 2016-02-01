@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 
-
 class UserType extends AbstractType
 {
     /**
@@ -20,7 +19,7 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username',TextType::class,array(
+            ->add('username', TextType::class, array(
                 'label' => "Username",
                 'required' => true,
                 'attr' => array(
@@ -28,7 +27,7 @@ class UserType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('firstname',TextType::class,array(
+            ->add('firstname', TextType::class, array(
                 'label' => "First Name",
                 'required' => true,
                 'attr' => array(
@@ -36,7 +35,7 @@ class UserType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('lastname',TextType::class,array(
+            ->add('lastname', TextType::class, array(
                 'label' => "Last Name",
                 'required' => true,
                 'attr' => array(
@@ -44,7 +43,7 @@ class UserType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('email',EmailType::class,array(
+            ->add('email', EmailType::class, array(
                 'label' => "Email",
                 'required' => true,
                 'attr' => array(
@@ -52,16 +51,14 @@ class UserType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('password',TextType::class,array(
+            ->add('password', TextType::class, array(
                 'label' => "Password",
                 'required' => true,
                 'attr' => array(
                     "placeholder" => "Enter Password",
                     "class" => 'form-control'
                 )
-            ))
-
-        ;
+            ));
     }
 
     /**

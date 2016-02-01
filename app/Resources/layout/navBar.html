@@ -12,7 +12,12 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
+                {% if is_granted('ROLE_DOCTOR') and is_granted('ROLE_ADMIN') == false %}
+                <li><a href="/addAfspraak">Appointments</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_PATIENT') and is_granted('ROLE_ADMIN') == false  and is_granted('ROLE_DOCTOR') == false %}
                 <li><a href="/showAfspraken">Appointments</a></li>
+                {% endif %}
                 <li><a href="/team">Team</a></li>
                 {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="/location/showLocations">Locations</a></li>

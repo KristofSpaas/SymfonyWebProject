@@ -6,9 +6,9 @@ parameters:
     database_user: root
     database_password: null
     mailer_transport: gmail
-    mailer_host: ~
+    mailer_host: null
     mailer_user: dendokteur
     mailer_password: 12test34
     secret: 278bfb33ad18dff30591f27e58e26cddc615cf03
-    doctors_per_page: 5
     patients_per_page: 5
+    doctors_per_page: 5

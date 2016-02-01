@@ -34,3 +34,12 @@
     overflow: hidden;
     border-top: solid 1px rgb(198,198,198);
 }
+
+.myPageContent {
+    padding: 4%;
+    padding-top: 1%;
+}
+
+.myPageHeader {
+    padding-left: 4%;
+}

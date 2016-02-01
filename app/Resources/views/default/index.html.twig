@@ -18,11 +18,9 @@
                     <div class="col-xs-12 col-sm-6 col-md-3" style="text-align: center">
                         <h4>Dr. {{ doctor.user.lastname }}</h4>
                         <a href="{{ path('profile_upload') }}">
-                            <img src="/uploads/profileImages/{{ doctor.user.image.path }}" class="thumbnail" style="height:250px;margin:auto">
+                            <img src="/uploads/profileImages/{{ doctor.user.image.path }}" class="thumbnail"
+                                 style="height:250px;margin:auto">
                         </a>
-                        <br>
-                        <a href="{{ path('addAfspraak',{'id': doctor.id } ) }}" class="btn btn-md btn-primary" >Make an appointment</a>
-                        <hr>
                     </div>
                 {% endfor %}
             </div>
