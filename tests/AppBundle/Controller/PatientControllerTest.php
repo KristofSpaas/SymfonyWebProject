@@ -47,7 +47,7 @@ class PatientControllerTest extends WebTestCase
 
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Patient Patient")')->count()
+            $crawler->filter('html:contains("Patient")')->count()
         );
     }
 
@@ -72,7 +72,7 @@ class PatientControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'password',
         ));
 
-        $crawler = $client->request('GET', 'patient/notfoundurl');
+        $client->request('GET', 'patient/notfoundurl');
 
         $this->assertTrue($client->getResponse()->isNotFound());
     }

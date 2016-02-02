@@ -14,11 +14,11 @@
                     </th>
                 {% endfor %}
             </tr>
-            {% for i in 0..5 %}
+            {% for i, hour in hours %}
                 <tr>
-                    <td>{{ hours[i] }}</td>
-                    {% for j in 0..6 %}
-                        <td class="text-center">
+                    <td>{{ hour }}</td>
+                    {% for j, day in days %}
+                        <td style="vertical-align:middle" class="text-center">
                             {% if afspraken[i][j] != null %}
                                 {% if afspraken[i][j].bezet == true %}
                                     {% if  afspraken[i][j].patient.id == patientId %}
@@ -47,7 +47,7 @@
                                     <br/>
                                     <br/>
                                     <button type="button" class="btn btn-success btn" data-toggle="modal"
-                                            data-target="#myModal">
+                                            data-target="#myModal" onclick="buttonClicked({{ i }}, {{ j }})">
                                         Book
                                     </button>
                                     <!-- Modal -->
@@ -85,28 +85,9 @@
     </div>
 
     <script>
-        var table = document.getElementById('myTable');
-        var cells = table.getElementsByTagName("td");
-
-        var rowIndex = 0;
-        var cellIndex = 0;
-
-        for (var i = 1; i < cells.length; i++) {
-            // Cell Object
-            var cell = cells[i];
-            // Track with onclick
-            cell.onclick = function () {
-                if (this.cellIndex != 1 || this.parentNode.rowIndex != 1) {
-                    cellIndex = this.cellIndex;
-                    rowIndex = this.parentNode.rowIndex;
-                }
-                bookAppointment();
-            }
-        }
-
-        function bookAppointment() {
-            $('#book_afspraak_row').val(rowIndex - 1);
-            $('#book_afspraak_col').val(cellIndex - 1);
+        function buttonClicked(i, j) {
+            $('#book_afspraak_row').val(i);
+            $('#book_afspraak_col').val(j);
         }
     </script>
 {% endblock %}

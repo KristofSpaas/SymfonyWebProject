@@ -33,7 +33,8 @@ class AfspraakController extends Controller
         $patient = $query->setMaxResults(1)->getOneOrNullResult();
 
         $afspraken = $em->getRepository("AppBundle:Afspraak")->findAll();
-        $hours = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00'];
+        $hours = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00',
+            '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
 
         $datesOriginal = [];
         $datesFormatted = [];
@@ -41,7 +42,7 @@ class AfspraakController extends Controller
         $date = new DateTime();
         for ($i = 0; $i < 7; $i++) {
             $datesOriginal[$i] = new DateTime(date_format($date, 'Y-m-d'));
-            $datesFormatted[$i] = date_format($date, 'd/m/Y');
+            $datesFormatted[$i] = date_format($date, 'D d/m');
             $date->modify('+1 day');
         }
 
@@ -108,7 +109,8 @@ class AfspraakController extends Controller
         $doctor = $query->setMaxResults(1)->getOneOrNullResult();
 
         $afspraken = $em->getRepository("AppBundle:Afspraak")->findAll();
-        $hours = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00'];
+        $hours = ['08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00',
+            '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
 
         $datesOriginal = [];
         $datesFormatted = [];
@@ -116,7 +118,7 @@ class AfspraakController extends Controller
         $date = new DateTime();
         for ($i = 0; $i < 7; $i++) {
             $datesOriginal[$i] = new DateTime(date_format($date, 'Y-m-d'));
-            $datesFormatted[$i] = date_format($date, 'd/m/Y');
+            $datesFormatted[$i] = date_format($date, 'D d/m');
             $date->modify('+1 day');
         }
 

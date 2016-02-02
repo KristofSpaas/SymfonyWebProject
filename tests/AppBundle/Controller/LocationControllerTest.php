@@ -55,7 +55,7 @@ class LocationControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'password',
         ));
 
-        $crawler = $client->request('GET', 'location/notfoundurl');
+        $client->request('GET', 'location/notfoundurl');
 
         $this->assertTrue($client->getResponse()->isNotFound());
     }

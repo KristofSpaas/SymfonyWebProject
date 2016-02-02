@@ -17,10 +17,8 @@
                 {% for doctor in doctors %}
                     <div class="col-xs-12 col-sm-6 col-md-3" style="text-align: center">
                         <h4>Dr. {{ doctor.user.lastname }}</h4>
-                        <a href="{{ path('profile_upload') }}">
-                            <img src="/uploads/profileImages/{{ doctor.user.image.path }}" class="thumbnail"
-                                 style="height:250px;margin:auto">
-                        </a>
+                        <img src="/uploads/profileImages/{{ doctor.user.image.path }}" class="thumbnail"
+                             style="height:250px;margin:auto">
                     </div>
                 {% endfor %}
             </div>

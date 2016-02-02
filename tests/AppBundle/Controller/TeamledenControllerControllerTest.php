@@ -20,11 +20,11 @@ class TeamledenControllerControllerTest extends WebTestCase
 
     public function testNotFound() {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'kris.s@g.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW'   => 'password',
         ));
 
-        $crawler = $client->request('GET', 'team/notfoundurl');
+        $client->request('GET', 'team/notfoundurl');
 
         $this->assertTrue($client->getResponse()->isNotFound());
     }

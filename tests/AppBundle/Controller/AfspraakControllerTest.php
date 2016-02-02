@@ -42,7 +42,7 @@ class AfspraakControllerTest extends WebTestCase
             'PHP_AUTH_PW'   => 'password',
         ));
 
-        $crawler = $client->request('GET', 'afspraak/notfoundurl');
+        $client->request('GET', 'afspraak/notfoundurl');
 
         $this->assertTrue($client->getResponse()->isNotFound());
     }
