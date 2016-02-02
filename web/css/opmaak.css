@@ -43,3 +43,12 @@
 .myPageHeader {
     padding-left: 4%;
 }
+
+tr th {
+    text-align: left;
+}
+
+#user_captcha {
+    margin-bottom: 3%;
+}
+

@@ -12,12 +12,11 @@
         {{ form_errors(form.file) }}
         {{ form_widget(form.file) }}
     </div>
-    <input type="submit" value="Update" class="btn btn-lg btn-primary" />
+    <input type="submit" value="Update" class="btn btn-lg btn-success" />
 
     {{ form_end(form) }}
     <hr />
-    <a href="{{ path('profile') }}">Back to your profile</a>
-    <hr />
+    <a class="btn btn-lg btn-primary" href="{{ path('profile') }}">Back to your profile</a>
 </div>
 
 {% endblock %}

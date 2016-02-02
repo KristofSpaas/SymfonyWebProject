@@ -2,16 +2,16 @@
 
 {% block body %}
     <div class="jumbotron myPageHeader">
-        <h1>Patient {{ user.fullname }}</h1>
+        <h1>Patient {{ patient.user.fullname }}</h1>
     </div>
     <div class="myPageContent">
         {{ form_start(delete_form) }}
-        <input type="submit" value="Delete" class="btn btn-lg btn-danger pull-right">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <input type="submit" value="Delete" class="btn btn-lg btn-danger pull-right">
+            </div>
+        </div>
         {{ form_end(delete_form) }}
-
-        <br/>
-        <br/>
-        <br/>
 
         {% if app.session.flashbag.has('danger') %}
             <div class="alert alert-danger">
@@ -27,30 +27,37 @@
                 {% endfor %}
             </div>
         {% endif %}
-        <table style="width: 40%" class="record_properties table table-striped">
-            <tbody>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
-                <td>{{ user.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            </tbody>
-        </table>
 
-        <a href="{{ path('editPatient',{'id':user.id}) }}" class="btn btn-lg btn-success">Edit</a>
+        <br/>
 
-        <hr />
+        <div class="row">
+            <div class="col-md-6 col-xs-12">
+                <table class="record_properties table table-striped table-bordered">
+                    <tbody>
+                    <tr>
+                        <th style="text-align: left">Username</th>
+                        <td>{{ patient.user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left">Firstname</th>
+                        <td>{{ patient.user.firstname }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left">Lastname</th>
+                        <td>{{ patient.user.lastname }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left">Email</th>
+                        <td>{{ patient.user.email }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <a href="{{ path('editPatient',{'id':patient.id}) }}" class="btn btn-lg btn-success">Edit</a>
+
+        <hr/>
         <a class="btn btn-lg btn-primary" href="{{ path('showPatients') }}">Back to Patients</a>
 
     </div>

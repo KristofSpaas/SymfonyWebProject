@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Patient;
 use AppBundle\Entity\User;
 use AppBundle\Entity\ProfileImage;
+use AppBundle\Form\EditUserType;
 use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -107,7 +108,7 @@ class PatientController extends Controller
             $em->persist($patient);
             $em->flush();
 
-            return $this->redirectToRoute('patientDetail', array('id' => $user->getId()));
+            return $this->redirectToRoute('patientDetail', array('id' => $patient->getId()));
         }
 
         return $this->render('AppBundle:Patient:addPatient.html.twig', array(
@@ -120,12 +121,12 @@ class PatientController extends Controller
      * @Route("/{id}", name="patientDetail")
      * @Method("GET")
      */
-    public function patientDetailAction(User $user)
+    public function patientDetailAction(Patient $patient)
     {
-        $deleteForm = $this->createDeleteForm($user);
+        $deleteForm = $this->createDeleteForm($patient);
 
         return $this->render('AppBundle:Patient:patientDetail.html.twig', array(
-            'user' => $user,
+            'patient' => $patient,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -134,24 +135,23 @@ class PatientController extends Controller
      * @Route("/{id}/editPatient", name="editPatient")
      * @Method({"GET", "POST"})
      */
-    public function editPatientAction(Request $request, User $user)
+    public function editPatientAction(Request $request, Patient $patient)
     {
-        $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm(UserType::class, $user);
+        $deleteForm = $this->createDeleteForm($patient);
+        $editForm = $this->createForm(EditUserType::class, $patient->getUser());
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            //add role based on value off checkbox
-            $em->persist($user);
+            $em->persist($patient->getUser());
             $em->flush();
 
-            return $this->redirectToRoute('patientDetail', array('id' => $user->getId()));
+            return $this->redirectToRoute('patientDetail', array('id' => $patient->getId()));
         }
 
         return $this->render('AppBundle:Patient:editPatient.html.twig', array(
-            'user' => $user,
+            'user' => $patient->getUser(),
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -163,33 +163,41 @@ class PatientController extends Controller
      * @Route("/{id}", name="deletePatient")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, User $user)
+    public function deleteAction(Request $request, Patient $patient)
     {
-        $form = $this->createDeleteForm($user);
+        $form = $this->createDeleteForm($patient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $query = $em->getRepository('AppBundle:Patient')->createQueryBuilder('p')
-                ->where('p.user = :id')
-                ->setParameter('id', $user)
+            $query = $em->getRepository('AppBundle:Afspraak')->createQueryBuilder('a')
+                ->where('a.patient = :patient')
+                ->setParameter('patient', $patient)
                 ->getQuery();
 
-            $patient = $query->setMaxResults(1)->getOneOrNullResult();
+            $afsprakenOfPatient = $query->getResult();
+
+            foreach($afsprakenOfPatient as $afspraak) {
+                $afspraak->setPatient(null);
+                $afspraak->setBezet(false);
+                $afspraak->setComment("");
+
+                $em->persist($afspraak);
+            }
 
             $em->remove($patient);
-            $em->remove($user);
+            $em->remove($patient->getUser());
             $em->flush();
         }
 
         return $this->redirectToRoute('showPatients');
     }
 
-    private function createDeleteForm(User $user)
+    private function createDeleteForm(Patient $patient)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('deletePatient', array('id' => $user->getId())))
+            ->setAction($this->generateUrl('deletePatient', array('id' => $patient->getId())))
             ->setMethod('DELETE')
             ->getForm();
     }

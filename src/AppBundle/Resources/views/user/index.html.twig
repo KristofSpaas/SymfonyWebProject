@@ -22,26 +22,27 @@
         </div>
         <br/>
         <br/>
-        <div class="row">
-            <table class="records_list table table-striped">
+        <div class="table-responsive">
+            <table class="records_list table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Username</th>
                         <th>Firstname</th>
                         <th>Lastname</th>
                         <th>Email</th>
-                        <th colspan="2"></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for doctor in doctors %}
                     <tr>
-                        <td><a href="{{ path('doctor_show', { 'id': doctor.user.id }) }}">{{ doctor.user.username }}</a></td>
+                        <td><a href="{{ path('doctor_show', { 'id': doctor.id }) }}">{{ doctor.user.username }}</a></td>
                         <td>{{ doctor.user.firstname }}</td>
                         <td>{{ doctor.user.lastname }}</td>
                         <td>{{ doctor.user.email }}</td>
-                        <td><a href="{{ path('doctor_show', { 'id': doctor.user.id }) }}" class="btn btn-md btn-primary">SHOW</a></td>
-                        <td><a href="{{ path('doctor_edit', { 'id': doctor.user.id }) }}" class="btn btn-md btn-success">EDIT</a></td>
+                        <td><a href="{{ path('doctor_show', { 'id': doctor.id }) }}" class="btn btn-md btn-primary">SHOW</a></td>
+                        <td><a href="{{ path('doctor_edit', { 'id': doctor.id }) }}" class="btn btn-md btn-success">EDIT</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

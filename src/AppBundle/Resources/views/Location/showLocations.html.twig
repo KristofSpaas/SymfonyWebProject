@@ -8,33 +8,36 @@
         <a href="{{ path('addLocation') }}" class="btn btn-lg btn-primary">Add Location</a>
         <br/>
         <br/>
-        <table class="records_list table table-striped">
-            <thead>
-            <tr>
-                <th>Room</th>
-                <th>Doctor</th>
-                <th></th>
-                <th>Edit</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for location in locations %}
-                <tr>
-                    <td>{{ location.lokaalnummer }}</td>
-                    {% if location.user != null %}
-                        <td>{{ location.user.firstname }} {{ location.user.lastname }}</td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                    <td><a href="{{ path('addDoctorToLocation', { 'id': location.id }) }}"
-                           class="btn btn-md btn-primary">Change doctor</a>
-                    </td>
 
-                    <td><a href="{{ path('editLocation', { 'id': location.id }) }}"
-                           class="btn btn-md btn-success">Edit</a></td>
+        <div class="table-responsive">
+            <table class="records_list table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Room</th>
+                    <th>Doctor</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for location in locations %}
+                    <tr>
+                        <td>{{ location.lokaalnummer }}</td>
+                        {% if location.user != null %}
+                            <td>{{ location.user.firstname }} {{ location.user.lastname }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td><a href="{{ path('addDoctorToLocation', { 'id': location.id }) }}"
+                               class="btn btn-md btn-primary">Change doctor</a>
+                        </td>
+
+                        <td><a href="{{ path('editLocation', { 'id': location.id }) }}"
+                               class="btn btn-md btn-success">Edit</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}

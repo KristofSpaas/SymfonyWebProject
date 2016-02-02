@@ -3,13 +3,13 @@ th {
 }
 
 @media only screen and (max-width: 500px) {
-    th{
+    #myTable th{
         font-size: 5px;
     }
-    td{
+    #myTable td{
         font-size: 5px;
     }
-    .btn{
+    #myTable td .btn{
         font-size: 5px;
         padding: 2px;
         padding-bottom: 0px;
@@ -17,13 +17,13 @@ th {
 }
 
 @media only screen and (max-width: 750px) and (min-width: 500px) {
-    th{
+    #myTable th{
         font-size: 8px;
     }
-    td{
+    #myTable td{
         font-size: 8px;
     }
-    .btn{
+    #myTable td .btn{
         font-size: 8px;
         padding: 4px;
     }

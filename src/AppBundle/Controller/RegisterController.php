@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 use AppBundle\Entity\ProfileImage;
+use Proxies\__CG__\AppBundle\Entity\Patient;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -30,7 +31,6 @@ class RegisterController extends Controller
             'length' => 6,
         ));
 
-        $form->remove('isAdmin');
         $form->add('submit', SubmitType::class, array(
             'label' => 'Register',
             'attr' => array('class' => 'btn btn-lg btn-primary')
@@ -44,7 +44,7 @@ class RegisterController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $this->get('app_bundle.user_manager')
                     ->setUserPassword($user, $user->getPassword());
-                $user->setRoles(array('ROLE_ADMIN'));
+                $user->setRoles(array('ROLE_PATIENT'));
 
                 $image = new ProfileImage();
                 $image->setPath('defaultProfileImage.png');
@@ -54,6 +54,11 @@ class RegisterController extends Controller
 
                 $user->setImage($image);
                 $em->persist($user);
+                $em->flush();
+
+                $patient = new Patient();
+                $patient->setUser($user);
+                $em->persist($patient);
                 $em->flush();
 
                 $request->getSession()

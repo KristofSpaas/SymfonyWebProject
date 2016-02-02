@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Doctor;
 use AppBundle\Entity\ProfileImage;
+use AppBundle\Form\EditUserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -41,7 +42,7 @@ class UserController extends Controller
             'paginator' => $pagelist,
             'cur' => $page,
             'total' => $paginator->getTotalPages(),
-            'key'=>$key));
+            'key' => $key));
     }
 
     /**
@@ -109,7 +110,7 @@ class UserController extends Controller
             $em->flush();
 
 
-            return $this->redirectToRoute('doctor_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('doctor_show', array('id' => $doctor->getId()));
         }
 
         return $this->render('AppBundle:user:new.html.twig', array(
@@ -124,12 +125,12 @@ class UserController extends Controller
      * @Route("/{id}", name="doctor_show")
      * @Method("GET")
      */
-    public function showAction(User $user)
+    public function showAction(Doctor $doctor)
     {
-        $deleteForm = $this->createDeleteForm($user);
+        $deleteForm = $this->createDeleteForm($doctor);
 
         return $this->render('AppBundle:user:show.html.twig', array(
-            'user' => $user,
+            'doctor' => $doctor,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -140,24 +141,24 @@ class UserController extends Controller
      * @Route("/{id}/edit", name="doctor_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, User $user)
+    public function editAction(Request $request, Doctor $doctor)
     {
-        $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm(UserType::class, $user);
+        $deleteForm = $this->createDeleteForm($doctor);
+        $editForm = $this->createForm(EditUserType::class, $doctor->getUser());
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             //add role based on value off checkbox
-            $em->persist($user);
+            $em->persist($doctor->getUser());
             $em->flush();
 
-            return $this->redirectToRoute('doctor_show', array('id' => $user->getId()));
+            return $this->redirectToRoute('doctor_show', array('id' => $doctor->getId()));
         }
 
         return $this->render('AppBundle:user:edit.html.twig', array(
-            'user' => $user,
+            'user' => $doctor->getUser(),
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -169,34 +170,39 @@ class UserController extends Controller
      * @Route("/{id}", name="doctor_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, User $user)
+    public function deleteAction(Request $request, Doctor $doctor)
     {
-        $form = $this->createDeleteForm($user);
+        $form = $this->createDeleteForm($doctor);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $query = $em->getRepository('AppBundle:Doctor')->createQueryBuilder('d')
-                ->where('d.user = :id')
-                ->setParameter('id', $user)
+            $query = $em->getRepository('AppBundle:Afspraak')->createQueryBuilder('a')
+                ->where('a.doctor = :doctor')
+                ->setParameter('doctor', $doctor)
                 ->getQuery();
 
-            $doctor = $query->setMaxResults(1)->getOneOrNullResult();
+            $afsprakenOfDoctor = $query->getResult();
+
+            foreach ($afsprakenOfDoctor as $afspraak) {
+                $em->remove($afspraak);
+            }
 
             $query2 = $em->getRepository('AppBundle:Location')->createQueryBuilder('l')
-                ->where('l.doctor = :id')
-                ->setParameter('id', $doctor)
+                ->where('l.doctor = :doctor')
+                ->setParameter('doctor', $doctor)
                 ->getQuery();
 
             $location = $query2->setMaxResults(1)->getOneOrNullResult();
 
-            $location->setDoctor(null);
-            $em->persist($doctor);
-            $em->flush();
+            if ($location != null) {
+                $location->setDoctor(null);
+                $em->persist($location);
+            }
 
             $em->remove($doctor);
-            $em->remove($user);
+            $em->remove($doctor->getUser());
             $em->flush();
         }
 
@@ -205,15 +211,12 @@ class UserController extends Controller
 
     /**
      * Creates a form to delete a User entity.
-     *
-     * @param User $user The User entity
-     *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(User $user)
+    private function createDeleteForm(Doctor $doctor)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('doctor_delete', array('id' => $user->getId())))
+            ->setAction($this->generateUrl('doctor_delete', array('id' => $doctor->getId())))
             ->setMethod('DELETE')
             ->getForm();
     }
@@ -227,7 +230,6 @@ class UserController extends Controller
 
         echo $output;
     }
-
 
 
 }

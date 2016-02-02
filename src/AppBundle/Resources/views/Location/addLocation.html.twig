@@ -8,10 +8,12 @@
     <div class="myPageContent">
         <div class="form">
             {{ form_start(form, {attr:{novalidate:"novalidate"}}) }}
-            <div class="form-group">
-                {{ form_label(form.lokaalNummer) }}
-                {{ form_widget(form.lokaalNummer) }}
-                {{ form_errors(form.lokaalNummer) }}
+            <div class="row">
+                <div class="form-group col-xs-12 col-md-6">
+                    {{ form_label(form.lokaalNummer) }}
+                    {{ form_widget(form.lokaalNummer) }}
+                    {{ form_errors(form.lokaalNummer) }}
+                </div>
             </div>
             <br/>
             <input type="submit" value="Add" class="btn btn-lg btn-success"/>
