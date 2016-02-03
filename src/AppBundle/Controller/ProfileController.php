@@ -79,7 +79,7 @@ class ProfileController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid() && $profileImage->getPath()!=null) {
             $em = $this->getDoctrine()->getManager();
 
             $user->setImage($profileImage);
