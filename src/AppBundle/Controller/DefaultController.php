@@ -22,10 +22,27 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:Doctor')->findAll();
+        $currentDoctorId = null;
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        if(is_null($user)){
+            $currentUserId = $user->getId();
+
+            if($em->getRepository('AppBundle:Doctor')->findByUser($currentUserId)){
+                $currentDoctor = $em->getRepository('AppBundle:Doctor')->findByUser($currentUserId);
+                $currentDoctorId = $currentDoctor->getId();
+
+            }
+        }
+
+
+
 
 
         return $this->render('default/index.html.twig', array(
-            'doctors' => $repo
+            'doctors' => $repo,
+            'id' => $currentDoctorId
         ));
 
     }
