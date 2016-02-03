@@ -16,27 +16,32 @@ class AppointmentRestController extends FOSRestController
         $response = [];
 
         $appointments = $em->getRepository('AppBundle:Afspraak')->findByDoctor($id);
-        $location =  $em->getRepository('AppBundle:Location')->findByDoctor($id);
-        $location = $location[0]->getLokaalNummer();
+        $location = $em->getRepository('AppBundle:Location')->findByDoctor($id);
 
-        foreach ($appointments as $appointment){
+        if ($location != null) {
+            $location = $location[0]->getLokaalNummer();
+        } else {
+            $location = "No location set";
+        }
+
+        foreach ($appointments as $appointment) {
             $date = $appointment->getDate();
             $doctor = $appointment->getDoctor()->getUser()->getLastname();
 
             $patient = $appointment->getPatient();
 
-            if($patient != null) {
+            if ($patient != null) {
                 $patientFirstName = $appointment->getPatient()->getUser()->getFirstname();
                 $patientLastName = $appointment->getPatient()->getUser()->getLastname();
                 $symptoms = $appointment->getComment();
 
                 $data = array(
-                    'date'=>$date,
-                    'doctor'=>$doctor,
-                    'location'=>$location,
-                    'patientFirstName'=>$patientFirstName,
-                    'patientLastName'=>$patientLastName,
-                    'symptoms'=>$symptoms
+                    'date' => $date,
+                    'doctor' => $doctor,
+                    'location' => $location,
+                    'patientFirstName' => $patientFirstName,
+                    'patientLastName' => $patientLastName,
+                    'symptoms' => $symptoms
                 );
 
                 array_push($response, $data);
