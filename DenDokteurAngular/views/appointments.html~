@@ -1,0 +1,30 @@
+﻿<div class="jumbotron">
+  <h1>Appointments for Dr. {{appointmentCtrl.doctor}}</H1>
+</div>
+
+<div class="table-responsive">
+    <table class="records_list table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th> Date </th>
+		<th> Patient </th>
+		<th> Symptoms </th>
+            </tr>
+        </thead>
+        <tbody>
+	        <tr ng-repeat="appointment in appointmentCtrl.appointments">
+			<td>
+				{{appointment.location}}
+			</td>
+			<td>
+				{{appointment.patientFirstName}} {{appointment.patientLastName}}
+			</td>
+			<td>
+				{{appointment.symptoms}}
+			</td>
+		
+		</tr>
+        </tbody>
+    </table>
+</div>
+

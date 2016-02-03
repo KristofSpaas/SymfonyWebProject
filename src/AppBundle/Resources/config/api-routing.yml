@@ -1,0 +1,4 @@
+dokteur_api_appointments:
+    type: rest
+    resource: "@AppBundle/Controller/AppointmentRestController.php"
+    name_prefix:  api_appointments_
