@@ -22,20 +22,25 @@ class AppointmentRestController extends FOSRestController
         foreach ($appointments as $appointment){
             $date = $appointment->getDate();
             $doctor = $appointment->getDoctor()->getUser()->getLastname();
-            $patientFirstName = $appointment->getPatient()->getUser()->getFirstname();
-            $patientLastName = $appointment->getPatient()->getUser()->getLastname();
-            $symptoms = $appointment->getComment();
 
-            $data = array(
-                'date'=>$date,
-                'doctor'=>$doctor,
-                'location'=>$location,
-                'patientFirstName'=>$patientFirstName,
-                'patientLastName'=>$patientLastName,
-                'symptoms'=>$symptoms
-            );
+            $patient = $appointment->getPatient();
 
-            array_push($response, $data);
+            if($patient != null) {
+                $patientFirstName = $appointment->getPatient()->getUser()->getFirstname();
+                $patientLastName = $appointment->getPatient()->getUser()->getLastname();
+                $symptoms = $appointment->getComment();
+
+                $data = array(
+                    'date'=>$date,
+                    'doctor'=>$doctor,
+                    'location'=>$location,
+                    'patientFirstName'=>$patientFirstName,
+                    'patientLastName'=>$patientLastName,
+                    'symptoms'=>$symptoms
+                );
+
+                array_push($response, $data);
+            }
         }
 
 
